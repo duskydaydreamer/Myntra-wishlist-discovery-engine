@@ -8,7 +8,8 @@ from fastapi.responses import StreamingResponse
 
 from backend.api.dependencies import get_db_session
 from backend.api.schemas.evidence import EvidenceListResponse, ObservationResponse, ObservationDetailResponse
-from backend.store.database import Observation, ThemeAssignment, ClusterMembership, OpportunityEvidence
+from backend.api.resolvers import get_latest_successful_run
+from backend.store.database import RunRecord, Observation, ThemeAssignment, ClusterMembership, OpportunityEvidence
 from backend.api.routers.dashboard import _build_filters
 from backend.research_rules import OPPORTUNITY_RULES
 
@@ -30,10 +31,13 @@ async def list_evidence(
     size: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db_session)
 ):
+    run = await get_latest_successful_run(db)
     db_filters = _build_filters(
         source=source, wishlist_intent=wishlist_intent, purchase_intent=purchase_intent,
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
+    db_filters.append(Observation.source_record_id == RunRecord.raw_record_id)
+    db_filters.append(RunRecord.pipeline_run_id == run.run_id)
     if search:
         db_filters.append(Observation.evidence_quote.ilike(f"%{search}%"))
     if predefined_theme:
@@ -55,12 +59,12 @@ async def list_evidence(
         else:
             db_filters.append(Observation.observation_id == "__unreviewed_opportunity__")
     
-    count_query = select(func.count(Observation.observation_id))
+    count_query = select(func.count(Observation.observation_id)).select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id)
     if db_filters: count_query = count_query.where(*db_filters)
     total_result = await db.execute(count_query)
     total = total_result.scalar() or 0
     
-    query = select(Observation)
+    query = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id)
     if db_filters: query = query.where(*db_filters)
 
     # Lead with quotes that are substantial and have enough structured context
@@ -136,13 +140,16 @@ async def export_evidence(
     predefined_theme: Optional[str] = Query(None),
     cluster_id: Optional[str] = Query(None),
     opportunity_id: Optional[str] = Query(None),
-    format: Optional[str] = Query("csv"),
+    format: Optional[str] = Query(\"csv\"),
     db: AsyncSession = Depends(get_db_session)
 ):
+    run = await get_latest_successful_run(db)
     db_filters = _build_filters(
         source=source, wishlist_intent=wishlist_intent, purchase_intent=purchase_intent,
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
+    db_filters.append(Observation.source_record_id == RunRecord.raw_record_id)
+    db_filters.append(RunRecord.pipeline_run_id == run.run_id)
     if search:
         db_filters.append(Observation.evidence_quote.ilike(f"%{search}%"))
     if predefined_theme:
@@ -164,7 +171,7 @@ async def export_evidence(
         else:
             db_filters.append(Observation.observation_id == "__unreviewed_opportunity__")
     
-    query = select(Observation)
+    query = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id)
     if db_filters: query = query.where(*db_filters)
     
     result = await db.execute(query)
@@ -199,7 +206,7 @@ async def export_evidence(
 
 @router.get("/{observation_id}", response_model=ObservationDetailResponse)
 async def get_evidence_detail(observation_id: str, db: AsyncSession = Depends(get_db_session)):
-    query = select(Observation).where(Observation.observation_id == observation_id)
+    query = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(Observation.observation_id == observation_id)
     result = await db.execute(query)
     obs = result.scalars().first()
     

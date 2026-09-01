@@ -93,33 +93,62 @@ async def run_canonical_pipeline(db_session: Session, run_id: str):
             else:
                 print(f"[{run_id}] EFFECTIVE PHASE 4 OBSERVATION SET CHANGED. RUNNING PHASE 4.")
                 
-                # 5. Phase 4 - run stages sequentially
-                print(f"[{run_id}] Running Predefined Mapping...")
-                run_predefined_mapping(run_id)
+                # SQLite native backup to guarantee Phase 4 atomicity
+                import sqlite3
+                backup_db_path = db_path + ".ph4_backup"
                 
-                print(f"[{run_id}] Running Emergent Clustering...")
-                run_emergent_clustering(run_id)
+                backup_conn = sqlite3.connect(backup_db_path)
+                with backup_conn:
+                    conn.backup(backup_conn)
+                backup_conn.close()
                 
-                print(f"[{run_id}] Running Aggregation...")
-                run_aggregation(run_id)
-                
-                print(f"[{run_id}] Running LLM Synthesis...")
-                run_llm_synthesis(run_id)
-                
-                print(f"[{run_id}] Running Taxonomy...")
-                run_taxonomy(run_id)
-                
-                print(f"[{run_id}] Running Unmet Need Context...")
-                run_unmet_need_context(run_id)
-                
-                print(f"[{run_id}] Running Opportunities...")
-                run_opportunities(run_id)
-                
-                print(f"[{run_id}] Running Knowledge Graph...")
-                run_knowledge_graph(run_id)
-                
-                print(f"[{run_id}] Running Quantification...")
-                run_quantification(run_id)
+                try:
+                    # 5. Phase 4 - run stages sequentially
+                    print(f"[{run_id}] Running Predefined Mapping...")
+                    run_predefined_mapping(run_id)
+                    
+                    print(f"[{run_id}] Running Emergent Clustering...")
+                    run_emergent_clustering(run_id)
+                    
+                    print(f"[{run_id}] Running Aggregation...")
+                    run_aggregation(run_id)
+                    
+                    print(f"[{run_id}] Running LLM Synthesis...")
+                    run_llm_synthesis(run_id)
+                    
+                    print(f"[{run_id}] Running Taxonomy...")
+                    run_taxonomy(run_id)
+                    
+                    print(f"[{run_id}] Running Unmet Need Context...")
+                    run_unmet_need_context(run_id)
+                    
+                    print(f"[{run_id}] Running Opportunities...")
+                    run_opportunities(run_id)
+                    
+                    print(f"[{run_id}] Running Knowledge Graph...")
+                    run_knowledge_graph(run_id)
+                    
+                    print(f"[{run_id}] Running Quantification...")
+                    run_quantification(run_id)
+                except Exception as ph4_error:
+                    print(f"[{run_id}] Phase 4 Failed. Restoring from backup to prevent partial state exposure.")
+                    # Close the main connection so we can restore it
+                    conn.close()
+                    
+                    # Restore using sqlite3 backup API
+                    restore_src_conn = sqlite3.connect(backup_db_path)
+                    restore_dst_conn = sqlite3.connect(db_path)
+                    with restore_dst_conn:
+                        restore_src_conn.backup(restore_dst_conn)
+                    restore_src_conn.close()
+                    restore_dst_conn.close()
+                    
+                    # Reopen connection for finally block
+                    conn = sqlite3.connect(db_path)
+                    raise ph4_error
+                finally:
+                    if os.path.exists(backup_db_path):
+                        os.remove(backup_db_path)
             
         # Finalize run status
         run_record = db_session.query(PipelineRun).filter(PipelineRun.run_id == run_id).first()

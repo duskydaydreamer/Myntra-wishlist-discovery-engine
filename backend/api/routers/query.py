@@ -5,7 +5,8 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 
 from backend.api.dependencies import get_db_session
-from backend.store.database import Observation, PredefinedTheme, ThemeAssignment
+from backend.api.resolvers import get_latest_successful_run
+from backend.store.database import RunRecord, Observation, PredefinedTheme, ThemeAssignment
 from backend.research_rules import DATASET_SCOPE_CAVEAT
 from backend.query.intent_parser import parse_intent
 from backend.query.filter_builder import build_sqlalchemy_filters, normalize_implied_filters
@@ -101,17 +102,19 @@ def _detect_ranked_dimension(question: str) -> Optional[str]:
 
 
 async def _ranked_dimension_response(question: str, dimension: str, db: AsyncSession):
+    run = await get_latest_successful_run(db)
     config = RANKED_DIMENSIONS[dimension]
     column = config["column"]
     count_result = await db.execute(
         select(column, func.count(Observation.observation_id))
+        .select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         .group_by(column)
         .order_by(desc(func.count(Observation.observation_id)))
     )
     all_counts = [(value, count) for value, count in count_result.all()]
     ranked = [(value, count) for value, count in all_counts if value and value not in {"unknown", "none"}]
     unknown_count = sum(count for value, count in all_counts if not value or value == "unknown")
-    denominator_result = await db.execute(select(func.count(Observation.observation_id)))
+    denominator = run.observation_count or 0
     denominator = denominator_result.scalar() or 0
 
     labels = config["labels"]
@@ -130,7 +133,7 @@ async def _ranked_dimension_response(question: str, dimension: str, db: AsyncSes
 
     ranked_values = [value for value, _ in ranked]
     unique_records_result = await db.execute(
-        select(func.count(func.distinct(Observation.source_record_id))).where(column.in_(ranked_values))
+        select(func.count(func.distinct(Observation.source_record_id))).select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id, column.in_(ranked_values))
     )
     return QueryResponse(
         query=question,
@@ -149,17 +152,18 @@ async def _ranked_dimension_response(question: str, dimension: str, db: AsyncSes
 
 
 async def _ranked_theme_response(question: str, db: AsyncSession):
+    run = await get_latest_successful_run(db)
     result = await db.execute(
         select(
             PredefinedTheme.canonical_name,
             func.count(func.distinct(ThemeAssignment.observation_id)),
         )
-        .outerjoin(ThemeAssignment, ThemeAssignment.predefined_theme_id == PredefinedTheme.theme_id)
+        .outerjoin(ThemeAssignment, ThemeAssignment.predefined_theme_id == PredefinedTheme.theme_id).outerjoin(Observation, Observation.observation_id == ThemeAssignment.observation_id).outerjoin(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         .group_by(PredefinedTheme.theme_id, PredefinedTheme.canonical_name)
         .order_by(desc(func.count(func.distinct(ThemeAssignment.observation_id))))
     )
     ranked = [(name or "Unnamed research topic", count) for name, count in result.all()]
-    denominator_result = await db.execute(select(func.count(Observation.observation_id)))
+    denominator = run.observation_count or 0
     denominator = denominator_result.scalar() or 0
     lines = [f"- **{name}** — **{count:,} matching observations**" for name, count in ranked[:8]]
     answer = "\n\n".join([
@@ -187,9 +191,10 @@ async def _ranked_theme_response(question: str, db: AsyncSession):
 
 
 async def _ranked_barrier_response(question: str, db: AsyncSession):
+    run = await get_latest_successful_run(db)
     count_query = (
         select(Observation.primary_barrier, func.count(Observation.observation_id))
-        .where(Observation.primary_barrier.is_not(None))
+        .select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id, Observation.primary_barrier.is_not(None))
         .group_by(Observation.primary_barrier)
         .order_by(desc(func.count(Observation.observation_id)))
     )
@@ -204,7 +209,7 @@ async def _ranked_barrier_response(question: str, db: AsyncSession):
         reverse=True,
     )
 
-    denominator_result = await db.execute(select(func.count(Observation.observation_id)))
+    denominator = run.observation_count or 0
     denominator = denominator_result.scalar() or 0
     classified_count = sum(barrier_counts.values())
     unclassified_count = max(denominator - classified_count, 0)
@@ -215,7 +220,9 @@ async def _ranked_barrier_response(question: str, db: AsyncSession):
     for barrier, _ in ranked_barriers[:3]:
         sample_query = (
             select(Observation)
+            .join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id)
             .where(
+                RunRecord.pipeline_run_id == run.run_id,
                 Observation.primary_barrier == barrier,
                 func.length(Observation.evidence_quote).between(60, 300),
                 Observation.evidence_quote.not_like("%[NAME]%"),
@@ -260,7 +267,7 @@ async def _ranked_barrier_response(question: str, db: AsyncSession):
         answer_parts.extend(["### Representative customer comments", "\n".join(quote_lines)])
 
     source_count_result = await db.execute(
-        select(func.count(func.distinct(Observation.source_record_id))).where(
+        select(func.count(func.distinct(Observation.source_record_id))).select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id,
             Observation.primary_barrier.in_([barrier for barrier, _ in ranked_barriers])
         )
     )
@@ -331,7 +338,8 @@ async def execute_query(req: QueryRequest, db: AsyncSession = Depends(get_db_ses
     db_filters = build_sqlalchemy_filters(implied_filters)
     
     # 3. Retrieve eligible IDs
-    stmt = select(Observation)
+    run = await get_latest_successful_run(db)
+    stmt = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
     if db_filters:
         stmt = stmt.where(*db_filters)
         
@@ -350,8 +358,7 @@ async def execute_query(req: QueryRequest, db: AsyncSession = Depends(get_db_ses
         count = len(eligible_ids)
         
         # Calculate denominator (total canonical observations)
-        denom_result = await db.execute(select(func.count(Observation.observation_id)))
-        denominator = denom_result.scalar() or 0
+        denominator = run.observation_count or 0
         
         answer = f"Found {count} observation(s) matching the criteria out of {denominator} total."
         
@@ -363,7 +370,7 @@ async def execute_query(req: QueryRequest, db: AsyncSession = Depends(get_db_ses
             evidence_count=count,
             unique_source_count=(
                 await db.execute(
-                    select(func.count(func.distinct(Observation.source_record_id))).where(
+                    select(func.count(func.distinct(Observation.source_record_id))).select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id,
                         Observation.observation_id.in_(eligible_ids)
                     )
                 )
@@ -394,7 +401,8 @@ async def execute_query(req: QueryRequest, db: AsyncSession = Depends(get_db_ses
                 evidence=[]
             )
             
-        obs_stmt = select(Observation).where(Observation.observation_id.in_(top_k_ids))
+        run = await get_latest_successful_run(db)
+        obs_stmt = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id, Observation.observation_id.in_(top_k_ids))
         obs_result = await db.execute(obs_stmt)
         observations = obs_result.scalars().all()
         
