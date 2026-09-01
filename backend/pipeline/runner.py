@@ -14,8 +14,9 @@ from backend.ingestion.connectors.youtube import YouTubeAPIIngester
 from backend.ingestion.writer import IngestionWriter
 from backend.ingestion.run_tracker import RunTracker
 
-async def run_ingestion(sources, config):
-    run_id = f"run_{uuid.uuid4().hex[:8]}"
+async def run_ingestion(sources, config, run_id=None):
+    if run_id is None:
+        run_id = f"run_{uuid.uuid4().hex[:8]}"
     
     db_url = os.environ.get("DATABASE_URL", config.get("storage", {}).get("db_url", "sqlite:///data/discovery_pulse.db"))
     # For async sqlalchemy with sqlite, URL needs to be sqlite+aiosqlite
