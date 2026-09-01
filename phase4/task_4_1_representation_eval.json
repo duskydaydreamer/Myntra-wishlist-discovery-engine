@@ -1,0 +1,2189 @@
+{
+  "task": "4.1 Semantic Representation & Clustering Evaluation",
+  "generated_at": "2026-08-20T20:11:08.693732+00:00",
+  "started_at": "2026-08-20T19:51:41.236358+00:00",
+  "total_observations": 9171,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "random_seed": 42,
+  "comparison": {
+    "approach_a_best": {
+      "run_id": "A_cs50_ms10",
+      "n_clusters": 2,
+      "noise_rate": 0.6557,
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 10
+      }
+    },
+    "approach_b_best": {
+      "run_id": "B_un30_uc25_cs80_ms10",
+      "n_clusters": 20,
+      "noise_rate": 0.3711,
+      "umap_params": {
+        "n_neighbors": 30,
+        "n_components": 25,
+        "min_dist": 0.1
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 10
+      }
+    },
+    "selected_approach": "B_umap_hdbscan",
+    "selected_run_id": "B_un30_uc25_cs50_ms5",
+    "selection_rationale": "Selected configuration with meaningful cluster count (5-100), reasonable noise rate (20-60%), and no single cluster dominating >50% of clustered observations. HDBSCAN noise is retained as valid \u2014 it was NOT minimized as a selection criterion.",
+    "phase3_integrity_note": "Original Chroma observation_embeddings were NOT overwritten. UMAP reductions were computed in-memory only. Phase 3 observations.theme was NOT used in any embedding representation."
+  },
+  "selected_config": {
+    "approach": "B_umap_hdbscan",
+    "run_id": "B_un30_uc25_cs50_ms5",
+    "hdbscan_params": {
+      "min_cluster_size": 50,
+      "min_samples": 5
+    },
+    "umap_params": {
+      "n_neighbors": 30,
+      "n_components": 25,
+      "min_dist": 0.1
+    },
+    "stats": {
+      "n_clusters": 37,
+      "noise_count": 3401,
+      "noise_rate": 0.3708,
+      "total_observations": 9171,
+      "clustered_observations": 5770,
+      "cluster_size_distribution": {
+        "max": 620,
+        "min": 53,
+        "median": 116,
+        "p25": 79,
+        "p75": 165,
+        "sizes_top10": [
+          620,
+          426,
+          421,
+          367,
+          360,
+          235,
+          220,
+          177,
+          166,
+          165
+        ]
+      }
+    }
+  },
+  "approach_a_results": [
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs30_ms5",
+      "hdbscan_params": {
+        "min_cluster_size": 30,
+        "min_samples": 5
+      },
+      "stats": {
+        "n_clusters": 3,
+        "noise_count": 6935,
+        "noise_rate": 0.7562,
+        "total_observations": 9171,
+        "clustered_observations": 2236,
+        "cluster_size_distribution": {
+          "max": 2163,
+          "min": 36,
+          "median": 37,
+          "p25": 36,
+          "p75": 1100,
+          "sizes_top10": [
+            2163,
+            37,
+            36
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 1901,
+        "app_store": 11,
+        "youtube": 324
+      },
+      "elapsed_seconds": 150.23,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 1,
+          "cluster_size": 2163,
+          "sampled_observation_ids": [
+            "34d88c103c954cae8b4e51f84a27806a",
+            "7b1798ee059e4f0b9ddc8421965e1d5a",
+            "3474e9ece96847b39594c3c516686cda",
+            "cd1b8513e746409e8e646afb0ff5fcba",
+            "a492b77d12e8452c92635b687bcf39fe"
+          ],
+          "evidence_quotes": [
+            "Amazing shopping experience. The app is smooth, products are genuine, and there are great deals and discounts",
+            "absolutely Genuine app, Easy returns & replacement, more stylish and more type of options available than anywhere else.",
+            "worst delivery experience ever, order got delayed after delayed and it goes for out of delivery then without any call it got delivery failed",
+            "good quality of cloths and everything",
+            "Amazing shopping App with great discounts"
+          ],
+          "primary_barriers": [
+            "price",
+            "unknown",
+            "delivery",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 0,
+          "cluster_size": 37,
+          "sampled_observation_ids": [
+            "93e79b6b7bc44ebfa09ecd03c28638d3",
+            "3cffd1f2d5f0401fb5f1426b065c3171",
+            "af3b70ae912445f9bdfe4bebc1c81cc0",
+            "1f893d1a5f4d46b2be6e3825e01fe761",
+            "086f09f9cd4d4ba591eb2107e41c37dc"
+          ],
+          "evidence_quotes": [
+            "Plz give me link first second and third jeans plzzzzzzz sister",
+            "Jeans are look awsom i definitely buy",
+            "Please first jeans link send me",
+            "try baggy jeans",
+            "There are so many link which one is the same jeans link?"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "cluster_size": 36,
+          "sampled_observation_ids": [
+            "4c064028013b463999ca7bd693883b5e",
+            "94f99b6e31d14f58bb4b26ca8597ca4b",
+            "cdf426e7466e44ae9ded6ccee4da1195",
+            "46f4eaf0157444be8697f626397fefb2",
+            "fe428ce191e448629eebb433fa923872"
+          ],
+          "evidence_quotes": [
+            "Pls give me the 2nd one link plssss",
+            "Yellow suit ka link share",
+            "Pink link please please please",
+            "where is the link for dress",
+            "2nd outfit Link ??"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs50_ms5",
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 5
+      },
+      "stats": {
+        "n_clusters": 3,
+        "noise_count": 8454,
+        "noise_rate": 0.9218,
+        "total_observations": 9171,
+        "clustered_observations": 717,
+        "cluster_size_distribution": {
+          "max": 412,
+          "min": 72,
+          "median": 233,
+          "p25": 152,
+          "p75": 322,
+          "sizes_top10": [
+            412,
+            233,
+            72
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 629,
+        "youtube": 85,
+        "app_store": 3
+      },
+      "elapsed_seconds": 150.02,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 1,
+          "cluster_size": 412,
+          "sampled_observation_ids": [
+            "4821d50b8c5647e1b149d96cb5465cc9",
+            "2a798f02af4340c490b37b05db1749f0",
+            "a50fd05f2e274d90aa8d0774c0934cdc",
+            "4c751856364d4952b4159ebb3ee075e4",
+            "bf21490df5f9494a89d6fa07eb618564"
+          ],
+          "evidence_quotes": [
+            "Best app for online shopping as like Amazon and Flipkart especially for clothing.",
+            "very nice & quality products in Myntra, value for money. So I always choose Myntra.",
+            "nice app good service quality products trust worthy",
+            "Myntra is always trusted..I'm happy with myntra's products..",
+            "Best app which delivers best and reliable products"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "cluster_size": 233,
+          "sampled_observation_ids": [
+            "f2babf0f889648d3a1acdc41837fcedd",
+            "ad976d23dbb24181aa96cca724119f90",
+            "ca6a86dc19ac4e1caf22094080af3709",
+            "efddad332a824f93a60d755dcbbda04a",
+            "750fdcc8332144b2b3759fb6a92e8e75"
+          ],
+          "evidence_quotes": [
+            "good quality product at reasonable prices",
+            "awesome quality product",
+            "best in quality and affordable prices",
+            "quality is superb according the price and delivery experience is also good",
+            "fantastic products with good price"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 0,
+          "cluster_size": 72,
+          "sampled_observation_ids": [
+            "59005a07da3449e396b31b482d2d850b",
+            "c240819eeb33423aaecdbf8d3e42143d",
+            "34dde8fc145d486dadd17ed154fe9a7e",
+            "cb709731df9a4e059251919acdf6e320",
+            "61076f62efef4724b85749523116d493"
+          ],
+          "evidence_quotes": [
+            "myntra cancelled my order without any reason.",
+            "order cancelled by myntra.",
+            "all of my orders have been getting cancelled, and the only reason provided is \"due to unusual circumstances.\"",
+            "sometime they will delay your order then make you wait unnecessarily and after the wait the will just cancel it from their side",
+            "they either delay your order or cancel the order without even checking with their customers."
+          ],
+          "primary_barriers": [
+            "trust",
+            "delivery",
+            "delivery",
+            "delivery",
+            "delivery"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs50_ms10",
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 10
+      },
+      "stats": {
+        "n_clusters": 2,
+        "noise_count": 6013,
+        "noise_rate": 0.6557,
+        "total_observations": 9171,
+        "clustered_observations": 3158,
+        "cluster_size_distribution": {
+          "max": 3089,
+          "min": 69,
+          "median": 1579,
+          "p25": 824,
+          "p75": 2334,
+          "sizes_top10": [
+            3089,
+            69
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "youtube": 482,
+        "play_store": 2659,
+        "app_store": 16,
+        "reddit": 1
+      },
+      "elapsed_seconds": 150.64,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 0,
+          "cluster_size": 3089,
+          "sampled_observation_ids": [
+            "2b3569c7f5c74badb93a909d1c9e214f",
+            "9b29c009776941f4b6449424b24da153",
+            "b2959549e95141fa9abd411496c3f4c3",
+            "cd1b8513e746409e8e646afb0ff5fcba",
+            "24ef99923347441f826df42ce5ad6443"
+          ],
+          "evidence_quotes": [
+            "The exchange of my two items two different times was cancelled. Customer service has no answers for that worst service",
+            "in this application product is genuine",
+            "my favourite app best quality fabrics",
+            "good quality of cloths and everything",
+            "Quality of product is good ...and prize is reasonable"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "cluster_size": 69,
+          "sampled_observation_ids": [
+            "9724c897896d4cd9873f6d1155127c9a",
+            "dda8875ad93e45958129ae441d30d480",
+            "7a8161dd9e0d450f998204c30877d3a1",
+            "87a1269da9064d1ba894798f4ad9c285",
+            "c9566dc449dd4b25819cfbc106749e29"
+          ],
+          "evidence_quotes": [
+            "Skinny jeans",
+            "Hey can you please tell me your height....",
+            "Quality of jeans. Superbb",
+            "What's ur height? Plz for ref",
+            "Wow beautiful jeans pls share the link \u2764"
+          ],
+          "primary_barriers": [
+            "fit",
+            "fit",
+            "unknown",
+            "fit",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs80_ms10",
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 10
+      },
+      "stats": {
+        "n_clusters": 2,
+        "noise_count": 8117,
+        "noise_rate": 0.8851,
+        "total_observations": 9171,
+        "clustered_observations": 1054,
+        "cluster_size_distribution": {
+          "max": 963,
+          "min": 91,
+          "median": 527,
+          "p25": 309,
+          "p75": 745,
+          "sizes_top10": [
+            963,
+            91
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 931,
+        "youtube": 119,
+        "app_store": 4
+      },
+      "elapsed_seconds": 150.54,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 1,
+          "cluster_size": 963,
+          "sampled_observation_ids": [
+            "8a4ec8e825d148dd94654bf2a5e841c9",
+            "31ea8de1117c4843883ffe7a7a00807c",
+            "cd0b869f632f489f9f2f7bd98a956b35",
+            "ad976d23dbb24181aa96cca724119f90",
+            "fde12f2a79b54ef8896aa39393e33c4a"
+          ],
+          "evidence_quotes": [
+            "This app is amazing,it's giving more offers compare to other apps and we can get the branded products at reasonable price",
+            "very nice app fast delivery and best quality products. Love this app.",
+            "Why should customers be charged a platform fee?",
+            "awesome quality product",
+            "Good discounts, comparing to other apps."
+          ],
+          "primary_barriers": [
+            "price",
+            "unknown",
+            "price",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 0,
+          "cluster_size": 91,
+          "sampled_observation_ids": [
+            "192c76c90f5a4154b456f57c91489fed",
+            "53bbdbc4042c4e31954d525182131e77",
+            "59005a07da3449e396b31b482d2d850b",
+            "7a403d8f27e44aefa98986cf1380bb1b",
+            "fe6766e9b3bd4196a2d463b314ac0154"
+          ],
+          "evidence_quotes": [
+            "delivery delayed more than 12 days.... i cancelled the item and again 10 days for refund",
+            "my order was cancelled without my permission because myntra was not able to deliver the order on time and unable to locate the order.",
+            "myntra cancelled my order without any reason.",
+            "My order was automatically cancelled without my approval or any proper explanation.",
+            "my order was delayed by 5 days"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "delivery",
+            "trust",
+            "delivery",
+            "delivery"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs80_ms20",
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 20
+      },
+      "stats": {
+        "n_clusters": 2,
+        "noise_count": 8729,
+        "noise_rate": 0.9518,
+        "total_observations": 9171,
+        "clustered_observations": 442,
+        "cluster_size_distribution": {
+          "max": 317,
+          "min": 125,
+          "median": 221,
+          "p25": 173,
+          "p75": 269,
+          "sizes_top10": [
+            317,
+            125
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 389,
+        "youtube": 52,
+        "app_store": 1
+      },
+      "elapsed_seconds": 153.17,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 0,
+          "cluster_size": 317,
+          "sampled_observation_ids": [
+            "bfd422e6825c4a1f8c63b078e157adca",
+            "2a798f02af4340c490b37b05db1749f0",
+            "dc7a16eaaaf346f887bd13d00e70b3c2",
+            "9a9d3846bb9c43a1b1c72cc0b1500315",
+            "9228f6004ba54c9d92a92f637705c1bd"
+          ],
+          "evidence_quotes": [
+            "best shopping app ever easy and affordable",
+            "very nice & quality products in Myntra, value for money. So I always choose Myntra.",
+            "My experience of shopping with myntra is very good, and quality is also good",
+            "Whenever I order a product, the quality is very poor. Myntra never seems to deliver good quality products, even after charging high price",
+            "Very good app very satisfied from the quality of items"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "cluster_size": 125,
+          "sampled_observation_ids": [
+            "f2babf0f889648d3a1acdc41837fcedd",
+            "e2f86b3abf1d4200bfd3ab6ab4f8d80d",
+            "3d8d8a8f9a524a28ac89922bc4131c45",
+            "878b7012dcbd4648abf5591bd0c97465",
+            "39b0e9c865cc42e9bb49606b3cb2a1cd"
+          ],
+          "evidence_quotes": [
+            "good quality product at reasonable prices",
+            "best products at reasonable prices with good quality",
+            "high price low quality product",
+            "Good Product Quality & Best' Offer Available Here",
+            "best product best prices"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "price",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "A_direct_hdbscan",
+      "run_id": "A_cs100_ms15",
+      "hdbscan_params": {
+        "min_cluster_size": 100,
+        "min_samples": 15
+      },
+      "stats": {
+        "n_clusters": 2,
+        "noise_count": 8719,
+        "noise_rate": 0.9507,
+        "total_observations": 9171,
+        "clustered_observations": 452,
+        "cluster_size_distribution": {
+          "max": 320,
+          "min": 132,
+          "median": 226,
+          "p25": 179,
+          "p75": 273,
+          "sizes_top10": [
+            320,
+            132
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 393,
+        "youtube": 57,
+        "app_store": 2
+      },
+      "elapsed_seconds": 152.51,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 0,
+          "cluster_size": 320,
+          "sampled_observation_ids": [
+            "627c6af9f8944db5a8783ef1fdff3a5d",
+            "0a162e3f8f2a44cb801cddc61bb53ea8",
+            "e59f6afb6af44934ba749b47984d547e",
+            "b95b8da0ea9b454da80439a0f0bdf81e",
+            "31ea8de1117c4843883ffe7a7a00807c"
+          ],
+          "evidence_quotes": [
+            "myntra is a very good app to buy clothes it has very good quality products",
+            "truly authentic and best app for shopping",
+            "Quality myntra.",
+            "nice app and good quality reasonable",
+            "very nice app fast delivery and best quality products. Love this app."
+          ],
+          "primary_barriers": [
+            "quality",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "youtube",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 1,
+          "cluster_size": 132,
+          "sampled_observation_ids": [
+            "ced2fdc4ed324d15aa999c7336d95a9d",
+            "1ea67b7c9a804119b2de3133e2ad6e18",
+            "b301220ae51d406f8adeeb557685ffcb",
+            "800d2f159aaf46cfaa8a85b87e5d7676",
+            "e05a97cf2fca43d7a2c396fd9b35d870"
+          ],
+          "evidence_quotes": [
+            "best quality",
+            "quality is good",
+            "product quality is good i like it very much",
+            "Product quality is amazing and delivery was on time.",
+            "very good quality of cloths"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    }
+  ],
+  "approach_b_results": [
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un15_uc15_cs50_ms5",
+      "umap_params": {
+        "n_neighbors": 15,
+        "n_components": 15,
+        "min_dist": 0.0
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 5
+      },
+      "stats": {
+        "n_clusters": 42,
+        "noise_count": 2085,
+        "noise_rate": 0.2273,
+        "total_observations": 9171,
+        "clustered_observations": 7086,
+        "cluster_size_distribution": {
+          "max": 697,
+          "min": 53,
+          "median": 102,
+          "p25": 75,
+          "p75": 212,
+          "sizes_top10": [
+            697,
+            584,
+            458,
+            421,
+            361,
+            309,
+            250,
+            219,
+            217,
+            217
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "youtube": 2668,
+        "play_store": 4341,
+        "app_store": 40,
+        "reddit": 37
+      },
+      "elapsed_seconds": 62.36,
+      "umap_time_seconds": 61.79,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 3,
+          "cluster_size": 697,
+          "sampled_observation_ids": [
+            "17bf6d9400724c5fa9f709fa07bf7791",
+            "90a59819ea1e4330afe0692724b9b1c7",
+            "d58f8ecb5c734e36bc4f47035177b3ab",
+            "3d81a25f9d2a40f39309e8300df0c0f0",
+            "0f23bf3857d544dd8c787cd0146865ad"
+          ],
+          "evidence_quotes": [
+            "Mantra pr 700 me he to [NAME] 464 me wahi dress coopan aply karane pr",
+            "First intha return option aa stop pannanum.",
+            "No maine bht phni nd dhoyi abtk wsi hi h jesi aayi thi and comfortable",
+            "order cancel [NAME] to [NAME] balance [NAME] karte customer care time per time dete rahte",
+            "I prefer [NAME]... For the bigger and better brands."
+          ],
+          "primary_barriers": [
+            "price",
+            "trust",
+            "unknown",
+            "trust",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "play_store",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 39,
+          "cluster_size": 584,
+          "sampled_observation_ids": [
+            "f19ac3cab6a14289a9f78bf765cdd314",
+            "d8a4fcb241b74451bc7225d5f051a781",
+            "00724263153e4c0da1534c3c10f2ed8e",
+            "61b8f1c2f1ea4a3c8248eea796de1bce",
+            "20671fc8e3404859b1b1777d926eb289"
+          ],
+          "evidence_quotes": [
+            "Products were marked as delivered even though they were never delivered.",
+            "I placed an order for white anarkali on 7th aug and I wanted it before 14th aug and it got delivered today. So quick. And the size and fitting is just perfect.",
+            "The expected delivery date was 12 June, but today is 22 June and none of the orders have been delivered.",
+            "they r not canceling my order",
+            "some deliveries get delayed"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "delivery",
+            "delivery",
+            "delivery",
+            "delivery"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 11,
+          "cluster_size": 458,
+          "sampled_observation_ids": [
+            "ba06f4f63a804781a16a607c3626cba9",
+            "349c9f1de1064565870dd256276897e4",
+            "af9ef9c54b734ac1beab97b234449432",
+            "e825dc51181d42548e1381ca08f726b0",
+            "ef9d4f6e790c4265a18c5f54186ee3dc"
+          ],
+          "evidence_quotes": [
+            "Good app interface, good products at reasonable pricing",
+            "very high prices as compared to other apps the quality is same",
+            "quality products are guaranteed on this app",
+            "shopping app hai bharosemand...easy returns and refunds policy",
+            "genuine brands are on this app"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "price",
+            "unknown",
+            "trust",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 7,
+          "cluster_size": 421,
+          "sampled_observation_ids": [
+            "5118de7fd93c42beaa71c93893a54572",
+            "e10af236de4b4978bdf7d7b47adff8de",
+            "b4ad80d7b78349ba9690fbbcc90397f2",
+            "038527df484043d3a5d85f647ea16dd2",
+            "acf7665c93a74567af8c67330960aae7"
+          ],
+          "evidence_quotes": [
+            "The material is premium, and it holds everything I need without feeling bulky.",
+            "aur wash [NAME] loose [NAME]",
+            "And what about fabric",
+            "really good quality materials and perfect fit",
+            "First one is totally transperant..."
+          ],
+          "primary_barriers": [
+            "unknown",
+            "quality",
+            "quality",
+            "unknown",
+            "quality"
+          ],
+          "sources": [
+            "play_store",
+            "youtube",
+            "youtube",
+            "play_store",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 9,
+          "cluster_size": 361,
+          "sampled_observation_ids": [
+            "133ea1f1f8404f7bbf2d5137827206fb",
+            "fabceb4589094a1d8b3a0f997cd63d96",
+            "9c6de718d60844fa9832c443364ec641",
+            "13ff1a02c03a4b1eacaaae54bf8d21df",
+            "a24bbbd606d849b1946dfbdb2c8556db"
+          ],
+          "evidence_quotes": [
+            "Will it fit 16 inch laptop",
+            "Mine is 5'4.Will it fit me",
+            "how to check pant size pls reply",
+            "Take the exact size of your previous jeans which are you wearing",
+            "Hi may i know [NAME] size of the libas anarkali"
+          ],
+          "primary_barriers": [
+            "fit",
+            "fit",
+            "fit",
+            "fit",
+            "fit"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 38,
+          "cluster_size": 309,
+          "sampled_observation_ids": [
+            "847006c41ed146db99eae16e58cd410e",
+            "062e61ca4b3744d6a17e8506f2c2023c",
+            "320c1c74d8be41b1b0eeb34feed9700f",
+            "324c6da8d71149e3a5218e3c1a3684b2",
+            "52bad19b8c154e849206d2c46828d5f7"
+          ],
+          "evidence_quotes": [
+            "And when we put it in for an exchange, they don't even process it. I've been left hanging for 20 days now",
+            "delivery boy comes he rejected it by saying I received the wrong product but the pant was in very good condition with every proof",
+            "always totally deferent product other products recive mytra not verified products",
+            "one exchange got auto-cancelled and i am now stuck with wrong product.",
+            "After they have delivered a wrong product, they are also Rejecting the product return request"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "trust",
+            "quality",
+            "delivery",
+            "trust"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un15_uc15_cs80_ms10",
+      "umap_params": {
+        "n_neighbors": 15,
+        "n_components": 15,
+        "min_dist": 0.0
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 10
+      },
+      "stats": {
+        "n_clusters": 25,
+        "noise_count": 2386,
+        "noise_rate": 0.2602,
+        "total_observations": 9171,
+        "clustered_observations": 6785,
+        "cluster_size_distribution": {
+          "max": 710,
+          "min": 84,
+          "median": 210,
+          "p25": 125,
+          "p75": 359,
+          "sizes_top10": [
+            710,
+            693,
+            675,
+            546,
+            459,
+            421,
+            359,
+            254,
+            250,
+            231
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "youtube": 2395,
+        "play_store": 4324,
+        "app_store": 39,
+        "reddit": 27
+      },
+      "elapsed_seconds": 31.65,
+      "umap_time_seconds": 31.08,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 21,
+          "cluster_size": 710,
+          "sampled_observation_ids": [
+            "800d2f159aaf46cfaa8a85b87e5d7676",
+            "7905dbb260184e50addc86d9a52b2623",
+            "95e39825c0a344f1bc1fde1810ad7a9c",
+            "cd1fe6d4c13b428ba126379aa30466f7",
+            "e5752f78ac9a4fc9b3d66e8310012677"
+          ],
+          "evidence_quotes": [
+            "Product quality is amazing and delivery was on time.",
+            "ordered certain types of skin care products but all the products came defective or I can say used product..with no policy of return or exchange",
+            "Every time I order, they deliver the wrong product. They ruin customer profiles if I return it, and customer support only promises a solution within two days, but the problem is never resolved.",
+            "I received the wrong product but no one helped me I am not happy with customer helpline",
+            "nice delivery service and product quality"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "quality",
+            "trust",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 0,
+          "cluster_size": 693,
+          "sampled_observation_ids": [
+            "04549e526df741db81c1c76ed5720472",
+            "11a32fc680c44a2aa8afc23484646e3e",
+            "efebb17d0ee24842babc94fd72f0642a",
+            "15a75069a4cb4812aa653757ed42d59f",
+            "56f18a82cc064510b4e680573841375a"
+          ],
+          "evidence_quotes": [
+            "\u092e\u0948\u0902\u0928\u0947 myntra app \u0938\u0947 \u090f\u0915 \u0918\u0921\u093c\u0940 \u0911\u0930\u094d\u0921\u0930 \u0915\u0940 \u0925\u0940 \u091c\u093f\u0938\u0915\u0940 \u0915\u0940\u092e\u0924 4070 /- \u0925\u0940\u0964 \u092e\u0948\u0902\u0928\u0947 \u0911\u0928\u0932\u093e\u0907\u0928 \u092a\u0947\u092e\u0947\u0902\u091f \u0915\u0930 \u0926\u0940 \u0925\u0940 \u0914\u0930 \u092f\u0939 \u092a\u094d\u0930\u0940\u092a\u0947\u0921 \u0911\u0930\u094d\u0921\u0930 \u0925\u093e\u0964 \u0932\u0947\u0915\u093f\u0928 \u092e\u0941\u091d\u0947 \u091c\u094b \u0921\u093f\u0932\u0940\u0935\u0930\u0940 \u092e\u093f\u0932\u0940 \u0909\u0938\u092e\u0947\u0902 \u090f\u0915 \u0905\u0932\u0917 \u0939\u0940 \u092a\u094d\u0930\u094b\u0921\u0915\u094d\u091f \u0925\u093e\u0964",
+            "flipkart se achchi quality ka product milta hai myntra pe thoda sa costly hoga",
+            "[NAME] is not that great",
+            "app end maii verdict [NAME] sase sahi quality",
+            "Link for [NAME] colour"
+          ],
+          "primary_barriers": [
+            "trust",
+            "unknown",
+            "quality",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 14,
+          "cluster_size": 675,
+          "sampled_observation_ids": [
+            "0bd91145caec435d908b120dfb53a624",
+            "ded9706f55e5415897a0b951410c128f",
+            "6a6a35adcf9a428a858c6470a83985d5",
+            "345905c433ff413f93755edc37456e28",
+            "8288dbc3649349a7b45d3b931e43d307"
+          ],
+          "evidence_quotes": [
+            "myntra se shopping and return easy hai",
+            "they send fake product. i think meesho delivery and service are better than myntra .",
+            "tag loop fir return or exchange me [NAME] ho ye to [NAME] to [NAME] myntra, online scam kr rhe ho",
+            "It has been great shopping with myntra. Easy to use & competitive prices. keep it up.",
+            "You always post these at right time since there is huge sale on Myntra and these recommendations will truly help"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "trust",
+            "trust",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 20,
+          "cluster_size": 546,
+          "sampled_observation_ids": [
+            "0f5b0aa22f114618ade11fa04570cf1f",
+            "ce29380638184a379dc5e46854bb455d",
+            "8cc008f260af4ffaa7b671d8c0ceaa74",
+            "d8ac2014d3af41c59b6d8991a8355246",
+            "9a2c06bbcad04232819a47576704b909"
+          ],
+          "evidence_quotes": [
+            "good products,good quality",
+            "products are expensive than it should be, so yeah if y'all want best quality you must explore!!",
+            "products are available at minimal price...",
+            "Last one is good or not like what about the quality???",
+            "all other's have so bad designs"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "price",
+            "unknown",
+            "quality",
+            "quality"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "cluster_size": 459,
+          "sampled_observation_ids": [
+            "608808992adf453dba12ed0e49480fc8",
+            "dfca3b067c194b92a09a588ef96865f2",
+            "468da6dc2e6e4b13b599992c39aaf46c",
+            "2ccfa2555282488e98a3e9982ea5a4b7",
+            "dbaa803e15394d9aa666afbfd63c4c36"
+          ],
+          "evidence_quotes": [
+            "Fantastic App Fantastic Offer and prices",
+            "this is a very good app the prices are very low and quality is the best and there is many offers and coupans",
+            "very cooperative team to slove any problem material also good my experience with this app is excellent",
+            "Its a fraud app... U don't know when u get tricked by them.",
+            "love the app for the amazing offers they give. thank u, love the wide range of offers u guys give for ur customer."
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "trust",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "youtube",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "cluster_size": 421,
+          "sampled_observation_ids": [
+            "20aa8f56bd714336a41537123e60e7e7",
+            "1d95bd3e28314f548aef28ac269d088e",
+            "bc49dc8457da40d1b576a65420d1d430",
+            "4946a93e6f0c44ccb821f1b3bd0621e9",
+            "26931b05bb3947e69ee6df76fbceb8ba"
+          ],
+          "evidence_quotes": [
+            "look at the zip, the color has already changed",
+            "You can see the difference after one time wash",
+            "good product little tight",
+            "i bought a top from [NAME] from brand pantaloons and on washing it stained all the cloths",
+            "material is good of Myntra"
+          ],
+          "primary_barriers": [
+            "quality",
+            "quality",
+            "fit",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "play_store",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un20_uc20_cs50_ms5",
+      "umap_params": {
+        "n_neighbors": 20,
+        "n_components": 20,
+        "min_dist": 0.0
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 5
+      },
+      "stats": {
+        "n_clusters": 33,
+        "noise_count": 2165,
+        "noise_rate": 0.2361,
+        "total_observations": 9171,
+        "clustered_observations": 7006,
+        "cluster_size_distribution": {
+          "max": 711,
+          "min": 56,
+          "median": 130,
+          "p25": 75,
+          "p75": 278,
+          "sizes_top10": [
+            711,
+            682,
+            656,
+            463,
+            403,
+            362,
+            355,
+            347,
+            278,
+            258
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "youtube": 2636,
+        "play_store": 4297,
+        "app_store": 40,
+        "reddit": 33
+      },
+      "elapsed_seconds": 36.85,
+      "umap_time_seconds": 36.22,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 27,
+          "cluster_size": 711,
+          "sampled_observation_ids": [
+            "f454ab6292ab46aa8e6a705597d9018e",
+            "b846e58357614b5a91c78ab6e3f961e5",
+            "4a45a1625cf0485b91e8066fc50cfceb",
+            "dc5b5d3dfb44434bad8e63fd4090e514",
+            "d7b2d5938d9b43babb3c71456a8ca26b"
+          ],
+          "evidence_quotes": [
+            "you can get good products in affordable prices also they gives discount on every order",
+            "nice product and prices also less",
+            "good quality product giving for our customers and affordable price",
+            "superr product and heavy price",
+            "prices it little expensive"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "price",
+            "price"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "cluster_size": 682,
+          "sampled_observation_ids": [
+            "04549e526df741db81c1c76ed5720472",
+            "1f514c519e294af8bd75fd9e8e2ce24c",
+            "651c203a36df4a2d97cdefdd472b3959",
+            "15a75069a4cb4812aa653757ed42d59f",
+            "56f18a82cc064510b4e680573841375a"
+          ],
+          "evidence_quotes": [
+            "\u092e\u0948\u0902\u0928\u0947 myntra app \u0938\u0947 \u090f\u0915 \u0918\u0921\u093c\u0940 \u0911\u0930\u094d\u0921\u0930 \u0915\u0940 \u0925\u0940 \u091c\u093f\u0938\u0915\u0940 \u0915\u0940\u092e\u0924 4070 /- \u0925\u0940\u0964 \u092e\u0948\u0902\u0928\u0947 \u0911\u0928\u0932\u093e\u0907\u0928 \u092a\u0947\u092e\u0947\u0902\u091f \u0915\u0930 \u0926\u0940 \u0925\u0940 \u0914\u0930 \u092f\u0939 \u092a\u094d\u0930\u0940\u092a\u0947\u0921 \u0911\u0930\u094d\u0921\u0930 \u0925\u093e\u0964 \u0932\u0947\u0915\u093f\u0928 \u092e\u0941\u091d\u0947 \u091c\u094b \u0921\u093f\u0932\u0940\u0935\u0930\u0940 \u092e\u093f\u0932\u0940 \u0909\u0938\u092e\u0947\u0902 \u090f\u0915 \u0905\u0932\u0917 \u0939\u0940 \u092a\u094d\u0930\u094b\u0921\u0915\u094d\u091f \u0925\u093e\u0964",
+            "ghatiya app [NAME] joki products deliver [NAME] cancel [NAME] kbi ni lungii products",
+            "silk blend [NAME] comfortable [NAME]... Aur look [NAME]... Copy copy hi hota hai..",
+            "app end maii verdict [NAME] sase sahi quality",
+            "Link for [NAME] colour"
+          ],
+          "primary_barriers": [
+            "trust",
+            "delivery",
+            "quality",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 24,
+          "cluster_size": 656,
+          "sampled_observation_ids": [
+            "4c7465bf98c549e8b9b27618274aa82a",
+            "052937d914094cc69b68cf6489243e62",
+            "a405565d6763462a93be0fc79182ae34",
+            "e08e0b5757cf4673814ee72fa2030730",
+            "4cabcba00f0641a6b7461de42c4a3420"
+          ],
+          "evidence_quotes": [
+            "l get good deals on Myntra when it comes to clothes and cosmetics.",
+            "the shopping experience on Myntra is good and you will get many more offers at the time of sale.",
+            "love their free cash deals and vouchers is also good love myntra",
+            "ordered one kurta but size doesn't fit on me then I decided to return but still didn't pick up my product and today sent myntra side we are unable to pickup your return item what's is this myntra and ",
+            "Myntra have full of cheap sellers, who uploads different images or brands, and customer face problems while return."
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "delivery",
+            "trust"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 11,
+          "cluster_size": 463,
+          "sampled_observation_ids": [
+            "b1eb816c262648858455bc2993f75040",
+            "55f46dbe675845118ff13e097b96f1d4",
+            "fde12f2a79b54ef8896aa39393e33c4a",
+            "7918df49e2904944a96c14374d4b6dc6",
+            "7ea88c48ee7043358cacc56f750f631a"
+          ],
+          "evidence_quotes": [
+            "[NAME] app everything is super smooth and also good for review ur product that everyone can clear their doubts about the product",
+            "A good app always delivered on time... good experience",
+            "Good discounts, comparing to other apps.",
+            "software is good . easy to select all categories. compare with other I always prefer this .",
+            "its really a great app ever customer care respond to us for our concerns everything we shop here us worth for what we are spending"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 12,
+          "cluster_size": 403,
+          "sampled_observation_ids": [
+            "b8001b2b3cb94405b3a44d8c18d75119",
+            "eed254089554459698c18b42b27cac97",
+            "8b2395ac9929493886ec0014c16f98fd",
+            "b41185278f8d4684a7018700f09ff13a",
+            "11e7857446e34a42a367db1d4edb94cc"
+          ],
+          "evidence_quotes": [
+            "good and best materials",
+            "cloth is very soft and fine",
+            "item was good fabric. but I am thinking not bad",
+            "Plz share review this cordset",
+            "enjoyed alot fitting was cool and sweet"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 9,
+          "cluster_size": 362,
+          "sampled_observation_ids": [
+            "de0177dd5fdd4eb985ff0da47a9672f4",
+            "7c2621d420f34148a89db722fabf3820",
+            "742ab961dc294bc9ba0143ee33b737d8",
+            "2a1212267ae04789a3d34918f0f659e9",
+            "cfaba0cb7e3b4770a0c6cdbcca567b19"
+          ],
+          "evidence_quotes": [
+            "What size ????",
+            "previously I bought mast and harbour jeans in 32 size it was loose that's why I was asking you should I bought 32 or 30",
+            "can u pleaseeee mantion your hieght",
+            "Sir [NAME] 31.5\" [NAME] , main 30\" Ka Track pants buy [NAME]?",
+            "Your hight plz plz plz"
+          ],
+          "primary_barriers": [
+            "fit",
+            "fit",
+            "unknown",
+            "fit",
+            "fit"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un20_uc20_cs80_ms10",
+      "umap_params": {
+        "n_neighbors": 20,
+        "n_components": 20,
+        "min_dist": 0.0
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 10
+      },
+      "stats": {
+        "n_clusters": 28,
+        "noise_count": 2974,
+        "noise_rate": 0.3243,
+        "total_observations": 9171,
+        "clustered_observations": 6197,
+        "cluster_size_distribution": {
+          "max": 669,
+          "min": 80,
+          "median": 169,
+          "p25": 110,
+          "p75": 274,
+          "sizes_top10": [
+            669,
+            498,
+            481,
+            454,
+            349,
+            315,
+            286,
+            271,
+            258,
+            249
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 3987,
+        "youtube": 2149,
+        "reddit": 26,
+        "app_store": 35
+      },
+      "elapsed_seconds": 36.7,
+      "umap_time_seconds": 36.03,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 15,
+          "cluster_size": 669,
+          "sampled_observation_ids": [
+            "2bb7b2578ea14480a6a54e904450633f",
+            "2a798f02af4340c490b37b05db1749f0",
+            "fa8b681153e54a4580acf41cbed80ade",
+            "e889f47e674242d894f770b38cf73090",
+            "daca4e96ee814a87ae88413cfdff79a4"
+          ],
+          "evidence_quotes": [
+            "if you receive the wrong parcel from myntra and if in case you want return first of all they will take your lot of time like 7 days 10 days like you don't have they will give you all kinds of excuses ",
+            "very nice & quality products in Myntra, value for money. So I always choose Myntra.",
+            "Omitren is the dealer everyone in the know recommends",
+            "i shop from myntra only because of autgentic brands and good product",
+            "always shop from myntra because with pricing and the the quality of products is [NAME]"
+          ],
+          "primary_barriers": [
+            "trust",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "youtube",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 3,
+          "cluster_size": 498,
+          "sampled_observation_ids": [
+            "95647a9ebc714590adf42b11f678747a",
+            "03949e6629bd4c43953fa84bfe71f8ac",
+            "6e4e1e5b556740d7a344d9e91d928903",
+            "d992d2a163d94da2be97ce9c2a134341",
+            "4083f58204c045e5bf9602e7e10db83a"
+          ],
+          "evidence_quotes": [
+            "\u092a\u094d\u0932\u0947\u091f\u092b\u0949\u0930\u094d\u092e fee \u0915\u0947 \u0928\u093e\u092e \u092d\u0940 \u0932\u0942\u091f \u0936\u0941\u0930\u0942 \u0915\u0930 \u0926\u0940 \u0939\u0948",
+            "maine exchange kiya product 12 din lga [NAME] cancel [NAME] or mere 105 rs bhi nahi diye",
+            "return [NAME] request [NAME] hue 1 hafte se upar [NAME] ... problem ye [NAME] return [NAME] late",
+            "Ye dress friend [NAME] m [NAME] h [NAME]?",
+            "priec k according 631 vala b acha h"
+          ],
+          "primary_barriers": [
+            "price",
+            "delivery",
+            "delivery",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 21,
+          "cluster_size": 481,
+          "sampled_observation_ids": [
+            "3323bfc926f74964a3d3bc6f8a6f271b",
+            "c8d354ce4ade4115bff5d9559ec87c78",
+            "58608f9f8193426c83bd322646076c33",
+            "fc48d41c562a4451990aafdb9e70c655",
+            "988b0301441744eeb5a76506f55497a9"
+          ],
+          "evidence_quotes": [
+            "It's too expensive",
+            "very good resonible cost",
+            "best product in affordable price",
+            "Best offers thank you so much",
+            "sometimes product not worth the price"
+          ],
+          "primary_barriers": [
+            "price",
+            "unknown",
+            "unknown",
+            "unknown",
+            "price"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 9,
+          "cluster_size": 454,
+          "sampled_observation_ids": [
+            "b1eb816c262648858455bc2993f75040",
+            "da3ec2bfc0e049beba51c456fd235386",
+            "fd962bc4a77043e4aca41bb941a6bb99",
+            "af9ef9c54b734ac1beab97b234449432",
+            "7ea88c48ee7043358cacc56f750f631a"
+          ],
+          "evidence_quotes": [
+            "[NAME] app everything is super smooth and also good for review ur product that everyone can clear their doubts about the product",
+            "authentic app ...purchase, return,exchange everything is super easy",
+            "very trustworthy app",
+            "quality products are guaranteed on this app",
+            "its really a great app ever customer care respond to us for our concerns everything we shop here us worth for what we are spending"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 6,
+          "cluster_size": 349,
+          "sampled_observation_ids": [
+            "4aa9eb77bd5840a0a5e779ed2ae7846f",
+            "2fb1373a5f1c46fb8ae926492f19574b",
+            "5bbc01bbec464d80b0b822e1e327cfbd",
+            "0100e2521ff54a88b7255645faa28312",
+            "a24bbbd606d849b1946dfbdb2c8556db"
+          ],
+          "evidence_quotes": [
+            "Bhai 28 waist size hoga jo apne order [NAME].",
+            "What size do you wear in Libas and Endo Era?",
+            "Size too much small",
+            "I purchased pant size 34, really it very good and fittings",
+            "Hi may i know [NAME] size of the libas anarkali"
+          ],
+          "primary_barriers": [
+            "fit",
+            "fit",
+            "fit",
+            "unknown",
+            "fit"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "play_store",
+            "play_store",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 13,
+          "cluster_size": 315,
+          "sampled_observation_ids": [
+            "eafa601a17d94831a0138ad424ad82e3",
+            "3006a0c22ded419db226fa7ffd8e5fff",
+            "ae3c5a13aee8440fb9857ebf32e8de5c",
+            "0bde8e436fc54206a5fa542aaeb01077",
+            "b870c31069774629a6050d70b0212f75"
+          ],
+          "evidence_quotes": [
+            "All tops link also",
+            "link is also added",
+            "But there is only link for one",
+            "Hey it\u2019s in the description, please check",
+            "I want 1 one in yellow"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un30_uc25_cs50_ms5",
+      "umap_params": {
+        "n_neighbors": 30,
+        "n_components": 25,
+        "min_dist": 0.1
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 50,
+        "min_samples": 5
+      },
+      "stats": {
+        "n_clusters": 37,
+        "noise_count": 3401,
+        "noise_rate": 0.3708,
+        "total_observations": 9171,
+        "clustered_observations": 5770,
+        "cluster_size_distribution": {
+          "max": 620,
+          "min": 53,
+          "median": 116,
+          "p25": 79,
+          "p75": 165,
+          "sizes_top10": [
+            620,
+            426,
+            421,
+            367,
+            360,
+            235,
+            220,
+            177,
+            166,
+            165
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 3776,
+        "youtube": 1943,
+        "reddit": 21,
+        "app_store": 30
+      },
+      "elapsed_seconds": 45.25,
+      "umap_time_seconds": 44.31,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 18,
+          "cluster_size": 620,
+          "sampled_observation_ids": [
+            "361ae3f7aae747ca9677b9bd767a7877",
+            "8f23be2044b444b68ec79751a4738427",
+            "f1d7d126877a4101a03494a7ad71a927",
+            "e889f47e674242d894f770b38cf73090",
+            "d6c167bb57254136ba72d41ed5de55c9"
+          ],
+          "evidence_quotes": [
+            "the material of myntra is expensive quality will be good nd long-lasting [NAME] affordable..low quality",
+            "already returned a product but myntra showing the product is delivered. Myntra refused to refund.",
+            "New User discount is more Admired look on myntra . good designs than other primary shopping platform",
+            "i shop from myntra only because of autgentic brands and good product",
+            "quality wise it's perfect..each and every things u see on myntra"
+          ],
+          "primary_barriers": [
+            "price",
+            "trust",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 17,
+          "cluster_size": 426,
+          "sampled_observation_ids": [
+            "ca95d79f2a1e4aa0869bab42ba1bbe24",
+            "d40cc025da5f43fb8972e67c682c3083",
+            "b2e7f5e35c35481781312da28b1af779",
+            "bfd422e6825c4a1f8c63b078e157adca",
+            "e307fcf82057492a94424ff357cd02b5"
+          ],
+          "evidence_quotes": [
+            "The app is easy to use, offers a wide variety of products, and always has trendy options to choose from.",
+            "best price and hot date nice shopping app",
+            "Plz mentionthe details on th screen with article display with size n prize",
+            "best shopping app ever easy and affordable",
+            "I love everything about this app , the collections , the prices , the dilevery services ..........."
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "youtube",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 23,
+          "cluster_size": 421,
+          "sampled_observation_ids": [
+            "d2fb63a1e92448d3852d6f726f02a959",
+            "7857c790b6df4c09be48420477b1170e",
+            "1990fc5e401e40cf83b9034f6cca873b",
+            "f4487611f7a54b598a15756637af72a2",
+            "616141dfab344f86a706a6d8fcbe7cc2"
+          ],
+          "evidence_quotes": [
+            "MYNTRA500 offer app mein \u20b9500 off (first order + free shipping) [NAME], lekin checkout par discount apply hi [NAME] saari conditions match hone [NAME]. Customer support se [NAME] proper solution [NAME",
+            "pahle Myntra Mein quality acchi aati [NAME] to quality [NAME] aati [NAME] negative comments. returns [NAME] problem create [NAME] do bar return [NAME] to charges FIR badha dete [NAME]",
+            "Quality me [NAME] rehta h",
+            "Quality ka farq iai behen",
+            "wolog sale m khrb chize dete [NAME] returnable b hota h"
+          ],
+          "primary_barriers": [
+            "trust",
+            "quality",
+            "quality",
+            "quality",
+            "quality"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 30,
+          "cluster_size": 367,
+          "sampled_observation_ids": [
+            "f2ffabd2f2004a2d9460ae7fca59b796",
+            "d2d6ea19e054431292a3caaa3f4d3bfd",
+            "d7b2d5938d9b43babb3c71456a8ca26b",
+            "05b745f5d0044f7db4b07d0121a0bbfd",
+            "7a4c71b7439a4cc2bf4ab10f61226b69"
+          ],
+          "evidence_quotes": [
+            "best products at best prices",
+            "good for quality product",
+            "prices it little expensive",
+            "too expensive.",
+            "Variety of products at reasonable rates"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "price",
+            "price",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 8,
+          "cluster_size": 360,
+          "sampled_observation_ids": [
+            "4ac58acb45ba4f508fcc801dff4a0d83",
+            "3443e456c7d54ea0a3029d05c5d0ac28",
+            "acf7665c93a74567af8c67330960aae7",
+            "705fd68794bb4e7e94109d866ae4bfb4",
+            "af64b04497be43078979557e15773c3e"
+          ],
+          "evidence_quotes": [
+            "The fit is perfect, the material feels premium, and it's very comfortable to wear",
+            "Febric is too good breathable cotton. love this dress. light weight perfect for sunmers. amazing price...",
+            "First one is totally transperant...",
+            "happy with the product and fabric",
+            "quality and fitting is good"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "quality",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "youtube",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "cluster_size": 235,
+          "sampled_observation_ids": [
+            "78cd6a9c2d2a440ebb79b560a13f356c",
+            "4c7dcb49d5a54e5e87d61c39d7e8ac8a",
+            "0971959abeed470a959b3b78fcde91d5",
+            "9d72e2308b5f48c085d0f2de26c5323f",
+            "75892cc87f554fdba97b5c1ce9f071c2"
+          ],
+          "evidence_quotes": [
+            "The products take 8\u201310 days to be delivered, and the delivery service is extremely poor\u2014worse than Meesho's.",
+            "the quality of meesho one is definitely not that good",
+            "give him the meesho dress so that you can get your money paid for the myntra dress",
+            "Mesoo one is only for foto shot ....and Myntra one is for uses ...\ud83d\ude02",
+            "Meesho is not good for Myntra yes ya no please answering"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "quality",
+            "trust",
+            "quality",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        }
+      ]
+    },
+    {
+      "approach": "B_umap_hdbscan",
+      "run_id": "B_un30_uc25_cs80_ms10",
+      "umap_params": {
+        "n_neighbors": 30,
+        "n_components": 25,
+        "min_dist": 0.1
+      },
+      "hdbscan_params": {
+        "min_cluster_size": 80,
+        "min_samples": 10
+      },
+      "stats": {
+        "n_clusters": 20,
+        "noise_count": 3403,
+        "noise_rate": 0.3711,
+        "total_observations": 9171,
+        "clustered_observations": 5768,
+        "cluster_size_distribution": {
+          "max": 1077,
+          "min": 81,
+          "median": 200,
+          "p25": 118,
+          "p75": 402,
+          "sizes_top10": [
+            1077,
+            568,
+            543,
+            441,
+            406,
+            401,
+            316,
+            307,
+            289,
+            234
+          ]
+        }
+      },
+      "global_source_distribution": {
+        "play_store": 3797,
+        "youtube": 1920,
+        "reddit": 20,
+        "app_store": 31
+      },
+      "elapsed_seconds": 45.03,
+      "umap_time_seconds": 44.05,
+      "spot_check_clusters": [
+        {
+          "cluster_id": 14,
+          "cluster_size": 1077,
+          "sampled_observation_ids": [
+            "2082404f2f6446548e64a502fbad055a",
+            "ef49a9d18a9140efb8e0b1cdfeb820ec",
+            "900c57d6b53c40f19c484f0e4b811c72",
+            "9db9ed973c3249a49c454ededde4d61e",
+            "5b149b7e8e5b4db1b1ae2d297e9da2be"
+          ],
+          "evidence_quotes": [
+            "Time and again, my orders get automatically cancelled exactly when they are supposed to be delivered. I never requested these cancellations, yet the app keeps cancelling orders at the last moment with",
+            "they are using only [NAME] AND ENGLISH unable to communicate with them properly",
+            "Delivery committed was delayed and now they said its delayed by 5 days and nobody called. customer case I think its BOT",
+            "The product showed delivery by today, and I ordered and paid specifically because of that promise. I waited all day and tried repeatedly to contact the delivery partner. Instead, I received a false me",
+            "delivery date was 28th may ,and today its 2nd june still i didnt received"
+          ],
+          "primary_barriers": [
+            "delivery",
+            "trust",
+            "delivery",
+            "delivery",
+            "delivery"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 12,
+          "cluster_size": 568,
+          "sampled_observation_ids": [
+            "1a9f55b67d94429182f082a99c68faf5",
+            "cec48d36e490439db5860560e7f8bb36",
+            "3012dc32acac4035bc19e6746d3c5d9b",
+            "7e0922932d5f4e11906fd4e21296d43d",
+            "dcecf7cdddea42a18188a872b03d0a3c"
+          ],
+          "evidence_quotes": [
+            "Great shopping experience on the Myntra app!",
+            "quality product and quality experience with myntra",
+            "always a good experience to shop from myntra. great variety, seamless returns and exchange",
+            "I ordered an item and received totally different product, totally disappointed myntra. I want my money back 4th time with the issue",
+            "Products are good but myntra do not gives free products,means myntra cheats the customer to buy products.Free products e.g:- Buy 1 get 1 or 2 free offers."
+          ],
+          "primary_barriers": [
+            "trust",
+            "unknown",
+            "unknown",
+            "quality",
+            "price"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 4,
+          "cluster_size": 543,
+          "sampled_observation_ids": [
+            "ad6c308778274756a594cead213af731",
+            "54459d1d0101448f8b06d37106c5ea06",
+            "b3c361be2fa74751b759f4aed2d8ee06",
+            "fa397753f30742f6ad3b625fd653d634",
+            "6585a251c4c74eb584d05af41858b5bd"
+          ],
+          "evidence_quotes": [
+            "i cannot find the link.",
+            "Only 2 one was nice but you returned it",
+            "She only linked few products.Where are the remaining?",
+            "Please didi 1s shirt link please",
+            "2nd one ka link chahiye maine community post main [NAME] pls didi link send krdo"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 2,
+          "cluster_size": 441,
+          "sampled_observation_ids": [
+            "d335358716de414ba6d2cd3640495e18",
+            "da3ec2bfc0e049beba51c456fd235386",
+            "52c69efdc0e14cf0b83b85044a0ef533",
+            "fd962bc4a77043e4aca41bb941a6bb99",
+            "117aef9c49744260820a98c86528f4f7"
+          ],
+          "evidence_quotes": [
+            "The app is easy to use, offers frequent discounts, and deliveries are usually on time.",
+            "authentic app ...purchase, return,exchange everything is super easy",
+            "best shoping app with original brand products",
+            "very trustworthy app",
+            "app when compered to other e commerce website and apps"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        },
+        {
+          "cluster_id": 11,
+          "cluster_size": 406,
+          "sampled_observation_ids": [
+            "6009a08794b4417a917aa2918bb6f6c4",
+            "58f91ebbad0349b7af82f29f18fbb4f3",
+            "935b6b544de34bd185c7023efad1d9b2",
+            "feb496f9650948b2afabb0a7caae1483",
+            "f5acc58414924e9eb3aa037ebf1bd411"
+          ],
+          "evidence_quotes": [
+            "5 me se 2 [NAME] pasand na [NAME] us section se",
+            "me [NAME] request [NAME] is ghatiya jese app se kuchha na [NAME] 3 item order kiye the usmese aabhi 1 hi item aaye he or app me [NAME] 3 no item diliver [NAME] or [NAME] bhi online [NAME] the muje bah",
+            "pura order hi cancel ka option aata h bs",
+            "bhai choti to na [NAME]",
+            "set mangwa liye Flipkart or myntra se [NAME] hi ache aaye"
+          ],
+          "primary_barriers": [
+            "quality",
+            "delivery",
+            "unknown",
+            "fit",
+            "quality"
+          ],
+          "sources": [
+            "youtube",
+            "play_store",
+            "youtube",
+            "youtube",
+            "youtube"
+          ]
+        },
+        {
+          "cluster_id": 18,
+          "cluster_size": 401,
+          "sampled_observation_ids": [
+            "cc5d6fb94b1b4b0da3af961b26cbf817",
+            "5005a5c04ba3432f92b486b4304ae52d",
+            "5578d16448ff484cbf55ccf9352ad655",
+            "20cceb997bfc4f27bf458515b053682a",
+            "bdd4d479ad0a4f90be3d8da7b1c8ad8a"
+          ],
+          "evidence_quotes": [
+            "quality of the product is very good and affordable price.",
+            "Cheap like always! You are wasting money for the sake of reels",
+            "deal with great product,with low price",
+            "there product is quality best \ud83d\udcaf",
+            "affordable price best quality"
+          ],
+          "primary_barriers": [
+            "unknown",
+            "quality",
+            "unknown",
+            "unknown",
+            "unknown"
+          ],
+          "sources": [
+            "play_store",
+            "youtube",
+            "play_store",
+            "play_store",
+            "play_store"
+          ]
+        }
+      ]
+    }
+  ],
+  "evaluation_criteria": {
+    "semantic_coherence": "Manual review of spot_check_clusters per config",
+    "cluster_separation": "Evaluated via cluster_size_distribution and noise_rate",
+    "noise_behavior": "HDBSCAN noise is valid; not penalized or minimized",
+    "interpretability": "Spot-check evidence quotes reviewed for topic coherence",
+    "evidence_traceability": "All sampled observations traceable to source_record_id"
+  }
+}

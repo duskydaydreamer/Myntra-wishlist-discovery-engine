@@ -1,0 +1,62 @@
+[
+  {
+    "opportunity_id": "opp_002",
+    "title": "Inconsistent pricing and product quality can weaken purchase confidence.",
+    "description": "Investigate unexpected price changes, fee concerns, and inconsistent product quality without treating positive quality feedback as purchase friction.",
+    "supporting_unmet_needs": [
+      "Clear pricing and fees, with consistent product-quality expectations."
+    ],
+    "metrics": {
+      "observation_count": 421,
+      "unique_source_count": 421,
+      "dataset_prevalence_pct": 4.59
+    },
+    "relevance": {
+      "purchase": "directional",
+      "wishlist": "directional"
+    },
+    "prioritization_score": 421.0,
+    "calculation_note": "Counts only the reviewed inconsistent-pricing and quality cluster; the positive product-quality cluster previously included in this total is excluded.",
+    "validation_status": "directional_reviewed_clusters"
+  },
+  {
+    "opportunity_id": "opp_003",
+    "title": "Delivery, refund, and support failures can reduce confidence in buying again.",
+    "description": "Investigate incorrect deliveries, unresolved refunds, and unresponsive support as post-purchase trust and retention risks.",
+    "supporting_unmet_needs": [
+      "Reliable delivery resolution, timely refunds, and responsive customer support."
+    ],
+    "metrics": {
+      "observation_count": 274,
+      "unique_source_count": 274,
+      "dataset_prevalence_pct": 2.99
+    },
+    "relevance": {
+      "purchase": "directional",
+      "wishlist": "directional"
+    },
+    "prioritization_score": 274.0,
+    "calculation_note": "Counts only the reviewed refund-failure and incorrect-delivery/support clusters; the mixed return-experience cluster previously included in this total is excluded.",
+    "validation_status": "directional_reviewed_clusters"
+  },
+  {
+    "opportunity_id": "opp_001",
+    "title": "Shoppers need clearer size and fit information before choosing apparel.",
+    "description": "Investigate where missing measurements, model-size references, and height or length guidance make an online size decision difficult.",
+    "supporting_unmet_needs": [
+      "Clear garment measurements, model-size context, and height or length guidance."
+    ],
+    "metrics": {
+      "observation_count": 263,
+      "unique_source_count": 263,
+      "dataset_prevalence_pct": 2.87
+    },
+    "relevance": {
+      "purchase": "directional",
+      "wishlist": "directional"
+    },
+    "prioritization_score": 263.0,
+    "calculation_note": "Counts only the reviewed sizing-information and height-based sizing clusters; the positive dress-quality cluster previously included in this total is excluded.",
+    "validation_status": "directional_reviewed_clusters"
+  }
+]

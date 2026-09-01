@@ -1,0 +1,20 @@
+{
+  "representation_clustering": {
+    "method": "UMAP + HDBSCAN",
+    "semantic_coherence": "High",
+    "noise_percentage": 37.1
+  },
+  "predefined_semantic_mapping": {
+    "mapped_observations": 4028,
+    "mapping_rate": 43.9
+  },
+  "emergent_clusters": {
+    "total_clusters": 37,
+    "duplicate_concept_check": "Passed"
+  },
+  "representative_evidence": "Quote relevance and semantic centrality verified. No duplicates.",
+  "cluster_labels": "Problem/pattern-oriented language verified. Solution language removed.",
+  "root_cause_hypotheses": "Evidence traceability check passed. Repeated support verified.",
+  "unmet_needs": "Repeated evidence verified. Identifiable user goal and unresolved friction present.",
+  "opportunities": "Problem-oriented. Metric relevance classification verified. Denominators explicitly defined."
+}

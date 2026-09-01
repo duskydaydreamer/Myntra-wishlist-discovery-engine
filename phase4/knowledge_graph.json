@@ -1,0 +1,262 @@
+{
+  "metadata": {
+    "generated_at": "2026-08-20T20:48:52.359315+00:00",
+    "total_clusters": 38,
+    "total_unmet_needs": 8,
+    "total_opportunities": 3
+  },
+  "opportunities": [
+    {
+      "id": "opp_001",
+      "title": "Hyper-Personalized Fit & Sizing Intelligence",
+      "description": "Empower shoppers with precise sizing guidance, including height-specific sizing options and clear model specifications. Eliminating fit-uncertainty directly drives checkout confidence and reduces fit-related returns.",
+      "relevance": {
+        "purchase": "DIRECT",
+        "wishlist": "CONTEXTUAL"
+      },
+      "unmet_needs": [
+        {
+          "unmet_need": "Height-specific sizing options (e.g., petite or tall fits) and explicit inseam/length guidance on size charts.",
+          "observation_count": 177,
+          "associated_barriers": [
+            "fit",
+            "unknown"
+          ],
+          "associated_intents": [
+            "low",
+            "comparison_shortlist",
+            "high",
+            "unknown",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_012",
+              "canonical_label": "Lack of Height-Based Sizing",
+              "observation_count": 177,
+              "description": "Customers struggle to find clothing, particularly jeans, that fit their specific height, often receiving items that are too long. They are left guessing how garments will fit because size charts lack height and inseam context.",
+              "primary_root_cause": "Garment sizing relies on standard numeric sizes without offering height variants or detailed inseam measurements.",
+              "primary_unmet_need": "Height-specific sizing options (e.g., petite or tall fits) and explicit inseam/length guidance on size charts."
+            }
+          ]
+        },
+        {
+          "unmet_need": "Accurate sizing guidance to ensure perfect fit along with good quality",
+          "observation_count": 97,
+          "associated_barriers": [
+            "unknown",
+            "quality",
+            "fit",
+            "price",
+            "trust"
+          ],
+          "associated_intents": [
+            "unknown",
+            "high",
+            "low",
+            "none",
+            "inspiration"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_013",
+              "canonical_label": "High Overall Dress Quality",
+              "observation_count": 97,
+              "description": "Customers express strong satisfaction with the quality, comfort, and value of the dresses they purchased.",
+              "primary_root_cause": "Consistent product quality and affordable pricing across dress offerings",
+              "primary_unmet_need": "Accurate sizing guidance to ensure perfect fit along with good quality"
+            }
+          ]
+        },
+        {
+          "unmet_need": "Clear display of model measurements/sizes and accessible sizing assistance to confidently pick the right size.",
+          "observation_count": 86,
+          "associated_barriers": [
+            "fit",
+            "unknown"
+          ],
+          "associated_intents": [
+            "unknown",
+            "high",
+            "low",
+            "comparison_shortlist",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_011",
+              "canonical_label": "Sizing Guidance and Model References",
+              "observation_count": 86,
+              "description": "Users are actively seeking help with selecting the correct size and frequently ask about the specific size worn by models or creators in featured images.",
+              "primary_root_cause": "Lack of prominent model size information and intuitive fit reference tools on product listings.",
+              "primary_unmet_need": "Clear display of model measurements/sizes and accessible sizing assistance to confidently pick the right size."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opp_002",
+      "title": "Marketplace Quality & Price Governance",
+      "description": "Establish strict seller quality control and transparent pricing standards across all platform listings. Elevating baseline product standards and eliminating misleading sale pricing reinforces consumer trust and drives repeat conversions.",
+      "relevance": {
+        "purchase": "DIRECT",
+        "wishlist": "DIRECT"
+      },
+      "unmet_needs": [
+        {
+          "unmet_need": "Transparent sale pricing and reliable seller quality control.",
+          "observation_count": 421,
+          "associated_barriers": [
+            "quality",
+            "unknown",
+            "trust",
+            "delivery",
+            "price"
+          ],
+          "associated_intents": [
+            "unknown",
+            "low",
+            "none",
+            "high",
+            "comparison_shortlist"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_023",
+              "canonical_label": "Inconsistent Pricing and Product Quality",
+              "observation_count": 421,
+              "description": "Customers report mixed experiences with product quality, missing items from third-party sellers, and misleading promotional pricing during sales.",
+              "primary_root_cause": "Inadequate seller fulfillment verification and manipulative discount pricing strategies.",
+              "primary_unmet_need": "Transparent sale pricing and reliable seller quality control."
+            }
+          ]
+        },
+        {
+          "unmet_need": "Continued maintenance of high product standards and smooth operational policies across all listings.",
+          "observation_count": 620,
+          "associated_barriers": [
+            "unknown",
+            "trust",
+            "price",
+            "quality",
+            "delivery"
+          ],
+          "associated_intents": [
+            "unknown",
+            "high",
+            "none",
+            "low",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_018",
+              "canonical_label": "High Product Quality and Satisfaction",
+              "observation_count": 620,
+              "description": "Users express strong satisfaction with the overall shopping experience, highlighting consistent product quality, fair pricing, and seamless return policies.",
+              "primary_root_cause": "Effective quality assurance standards and customer-centric post-purchase service policies.",
+              "primary_unmet_need": "Continued maintenance of high product standards and smooth operational policies across all listings."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opp_003",
+      "title": "Frictionless Post-Purchase Operations & Support",
+      "description": "Streamline return, exchange, and refund workflows while improving order accuracy and customer service availability. Providing real-time tracking visibility and automated refunds protects brand loyalty and reduces operational churn.",
+      "relevance": {
+        "purchase": "DIRECT",
+        "wishlist": "LOW-UNCLEAR"
+      },
+      "unmet_needs": [
+        {
+          "unmet_need": "A consistently seamless, fast, and hassle-free process for returning or exchanging products.",
+          "observation_count": 69,
+          "associated_barriers": [
+            "unknown",
+            "trust",
+            "delivery",
+            "price"
+          ],
+          "associated_intents": [
+            "unknown",
+            "high",
+            "none",
+            "low",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_027",
+              "canonical_label": "Return and Exchange Policy Experience",
+              "observation_count": 69,
+              "description": "Users are providing feedback on the return and exchange process, primarily expressing satisfaction with its speed, simplicity, and ease of use.",
+              "primary_root_cause": "The ease of use and operational efficiency of the company's return and exchange workflow.",
+              "primary_unmet_need": "A consistently seamless, fast, and hassle-free process for returning or exchanging products."
+            }
+          ]
+        },
+        {
+          "unmet_need": "Prompt, automated refund processing with clear tracking visibility and full reimbursement to original payment methods",
+          "observation_count": 116,
+          "associated_barriers": [
+            "trust",
+            "delivery",
+            "price",
+            "quality",
+            "unknown"
+          ],
+          "associated_intents": [
+            "unknown",
+            "none",
+            "low",
+            "high",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_032",
+              "canonical_label": "Delayed or Unprocessed Order Refunds",
+              "observation_count": 116,
+              "description": "Customers report significant delays, non-receipt, or partial payouts of refunds following order cancellations or product returns. The issue is often compounded by misleading transaction updates and unhelpful customer support responses.",
+              "primary_root_cause": "Inefficient refund processing workflows and poor communication systems between payment gateways and customer support",
+              "primary_unmet_need": "Prompt, automated refund processing with clear tracking visibility and full reimbursement to original payment methods"
+            }
+          ]
+        },
+        {
+          "unmet_need": "Accurate order fulfillment and accessible, supportive customer care to quickly resolve wrong or damaged deliveries.",
+          "observation_count": 158,
+          "associated_barriers": [
+            "trust",
+            "quality",
+            "delivery",
+            "unknown",
+            "fit"
+          ],
+          "associated_intents": [
+            "unknown",
+            "none",
+            "high",
+            "low",
+            "genuine_purchase"
+          ],
+          "clusters": [
+            {
+              "cluster_id": "cluster_033",
+              "canonical_label": "Incorrect Deliveries and Unresponsive Support",
+              "observation_count": 158,
+              "description": "Customers repeatedly receive wrong or defective products and face extreme friction, failed quality checks, or outright refusal when trying to return or exchange them via customer support.",
+              "primary_root_cause": "Warehouse fulfillment errors combined with rigid quality control policies and unhelpful customer support.",
+              "primary_unmet_need": "Accurate order fulfillment and accessible, supportive customer care to quickly resolve wrong or damaged deliveries."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "unlinked_needs": [],
+  "unlinked_clusters": []
+}
