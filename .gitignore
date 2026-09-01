@@ -34,3 +34,10 @@ git-status.txt
 pytest_output.txt
 repair_debug.log
 audit.log
+
+# Presentation Artifacts
+myntra_slide_*.pptx
+myntra_slide_*_preview.png
+myntra_slide_*_sources.md
+myntra_slide_*/
+myntra_slide_*.ndjson
