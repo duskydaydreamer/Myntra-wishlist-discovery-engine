@@ -106,7 +106,8 @@ def build_knowledge_graph():
     return knowledge_graph
 
 
-def main():
+def run_knowledge_graph(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.9 — Knowledge Graph Construction")
     print("=" * 60)
@@ -126,5 +127,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_knowledge_graph()
     exit(0 if passed else 1)

@@ -111,12 +111,12 @@ def extract_batch(client, url, system_instruction, compact_schema, batch, batch_
             
     return None, {}, 0, "Max retries exceeded"
 
-def main():
+def run_extraction(db_path="data/discovery_pulse.db", run_id="run_latest"):
     load_dotenv()
     api_key = os.getenv("GEMINI_API_KEY")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={api_key}"
     
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
@@ -133,16 +133,13 @@ def main():
         FROM classified_records cr
         JOIN cleaned_records c ON cr.cleaned_record_id = c.cleaned_record_id
         JOIN raw_records r ON c.raw_record_id = r.raw_record_id
+        LEFT JOIN extraction_tracker et ON c.cleaned_record_id = et.cleaned_record_id
         WHERE cr.relevance_label IN ('highly_relevant', 'somewhat_relevant')
         AND c.is_spam = 0 AND c.is_duplicate = 0
+        AND (et.cleaned_record_id IS NULL OR et.status = 'failed')
     """)
-    relevant_records_db = [dict(row) for row in cursor.fetchall()]
-    record_dict = {r["cleaned_record_id"]: r for r in relevant_records_db}
-    
-    with open(CACHE_FILE, "r") as f:
-        extraction_cache = json.load(f)
-        
-    start_unresolved_count = sum(1 for v in extraction_cache.values() if v == "unresolved_retryable")
+    pending_records_db = [dict(row) for row in cursor.fetchall()]
+    record_dict = {r["cleaned_record_id"]: r for r in pending_records_db}
     
     compact_schema = {
         "type": "array",
@@ -218,16 +215,16 @@ def main():
         "new_obs_embs": 0
     }
     
-    def process_queue(queue_state_name, batch_size):
-        records_to_process = [record_dict[cid] for cid, state in extraction_cache.items() if state == queue_state_name and cid in record_dict]
+    def process_queue(batch_size):
+        records_to_process = list(record_dict.values())
         chunks = [records_to_process[i:i+batch_size] for i in range(0, len(records_to_process), batch_size)]
         
         hit_quota = False
         
         with httpx.Client(timeout=180.0) as client:
             for batch_idx, batch in enumerate(chunks):
-                batch_id = f"{queue_state_name}_b{batch_size}_{batch_idx}_{int(time.time())}"
-                print(f"[{queue_state_name} | Batch {batch_size}] Processing {batch_idx+1}/{len(chunks)} (size {len(batch)})...")
+                batch_id = f"batch_{batch_size}_{batch_idx}_{int(time.time())}"
+                print(f"[Batch {batch_size}] Processing {batch_idx+1}/{len(chunks)} (size {len(batch)})...")
                 
                 stats["api_calls"] += 1
                 stats["submitted"] += len(batch)
@@ -250,10 +247,10 @@ def main():
                     elif "503" in err:
                         stats["api_503"] += 1
                     
-                    # Batch failed, mark all as precision_repair_queue (unless they were already)
+                    # Batch failed
                     for r in batch:
-                        extraction_cache[r["cleaned_record_id"]] = "precision_repair_queue"
-                    with open(CACHE_FILE, "w") as f: json.dump(extraction_cache, f)
+                        cursor.execute("INSERT OR REPLACE INTO extraction_tracker (cleaned_record_id, status, observation_count, completed_at) VALUES (?, ?, ?, ?)", (r["cleaned_record_id"], "failed", 0, datetime.utcnow().isoformat()))
+                    conn.commit()
                     continue
                 
                 stats["api_success"] += 1
@@ -305,7 +302,7 @@ def main():
                             "extracted_at": datetime.utcnow().isoformat(),
                             "model_id": "gemini-3.6-flash",
                             "prompt_version": "v2-compact-phase3b",
-                            "created_in_pipeline_run_id": RUN_ID,
+                            "created_in_pipeline_run_id": run_id,
                         }
                         for k, v in expanded.items():
                             if k not in ["evidence_quote", "local_index"]:
@@ -367,47 +364,42 @@ def main():
                         col_observation.add(ids=obs_ids, embeddings=embed_model.encode(obs_docs).tolist(), documents=obs_docs, metadatas=obs_metas)
                         stats["new_obs_embs"] += len(obs_docs)
                 
-                # Reconcile Cache State
+                # Reconcile DB State
                 for r in batch:
                     cid = r["cleaned_record_id"]
                     if cid in records_with_invalid_quotes:
-                        extraction_cache[cid] = "precision_repair_queue"
+                        cursor.execute("INSERT OR REPLACE INTO extraction_tracker (cleaned_record_id, status, observation_count, completed_at) VALUES (?, ?, ?, ?)", (cid, "failed_quotes", 0, datetime.utcnow().isoformat()))
                     else:
                         c_obs = record_obs_counts[cid]
                         if c_obs > 0:
-                            extraction_cache[cid] = "successfully_extracted" # or successfully_processed
+                            cursor.execute("INSERT OR REPLACE INTO extraction_tracker (cleaned_record_id, status, observation_count, completed_at) VALUES (?, ?, ?, ?)", (cid, "successfully_extracted", c_obs, datetime.utcnow().isoformat()))
                             stats["successfully_processed"] += 1
                             if c_obs == 1: stats["records_with_one_obs"] += 1
                             else: stats["records_with_multi_obs"] += 1
                         else:
-                            extraction_cache[cid] = "successfully_processed_zero_observations"
+                            cursor.execute("INSERT OR REPLACE INTO extraction_tracker (cleaned_record_id, status, observation_count, completed_at) VALUES (?, ?, ?, ?)", (cid, "successfully_processed_zero_observations", 0, datetime.utcnow().isoformat()))
                             stats["successfully_processed_zero_obs"] += 1
                             
-                with open(CACHE_FILE, "w") as f:
-                    json.dump(extraction_cache, f)
+                conn.commit()
                 
         return hit_quota
 
-    # Pass 1: unresolved_retryable (Batch 100)
-    hit_quota = process_queue("unresolved_retryable", 100)
+    # Pass 1
+    hit_quota = process_queue(100)
     
     # Final Report
-    end_unresolved = sum(1 for v in extraction_cache.values() if v == "unresolved_retryable")
-    end_repair = sum(1 for v in extraction_cache.values() if v == "precision_repair_queue")
-    total_remaining_work = end_unresolved + end_repair
+    end_failed = cursor.execute("SELECT count(*) FROM extraction_tracker WHERE status LIKE 'failed%'").fetchone()[0]
     
     print("\n" + "="*50)
     print("PRODUCTION RUN REPORT")
     print("="*50)
     print("\nEXTRACTION")
-    print(f"- starting bulk_unresolved: {start_unresolved_count}")
+    print(f"- starting records: {len(pending_records_db)}")
     print(f"- records submitted: {stats['submitted']}")
     print(f"- successfully_processed: {stats['successfully_processed']}")
     print(f"- successfully_processed_zero_observations: {stats['successfully_processed_zero_obs']}")
     print(f"- new quote-validation failures: {stats['quote_failures']}")
-    print(f"- ending bulk_unresolved: {end_unresolved}")
-    print(f"- precision_repair_queue size: {end_repair}")
-    print(f"- total_remaining_work: {total_remaining_work}")
+    print(f"- failed queue size: {end_failed}")
     
     print("\nOBSERVATIONS")
     print(f"- new canonical observations: {stats['new_obs']}")
@@ -439,5 +431,10 @@ def main():
     print("- unaccounted records: 0")
     print("="*50)
     
+    return stats
+
+def main():
+    run_extraction()
+
 if __name__ == "__main__":
     main()

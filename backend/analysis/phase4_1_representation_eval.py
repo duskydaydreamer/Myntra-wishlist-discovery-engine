@@ -292,7 +292,8 @@ def select_best_config(results_a, results_b):
     return candidates[0][1]
 
 
-def main():
+def run_representation_eval(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.1 — Semantic Representation & Clustering Eval")
     print("=" * 60)
@@ -491,5 +492,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_representation_eval()
     exit(0 if passed else 1)

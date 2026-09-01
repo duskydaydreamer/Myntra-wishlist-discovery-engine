@@ -110,13 +110,13 @@ def init_db():
     return conn
 
 
-def main():
+def run_llm_synthesis(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.5 — LLM Naming & Root-Cause Synthesis")
     print("=" * 60)
     
-    run_id = f"run_{int(time.time())}"
-    conn = init_db()
+        conn = init_db()
     
     print("Loading representative quotes...")
     clusters = load_representatives()
@@ -209,5 +209,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_llm_synthesis()
     exit(0 if passed else 1)

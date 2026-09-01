@@ -79,13 +79,13 @@ def init_db():
     return conn
 
 
-def main():
+def run_opportunities(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.8 — Opportunity Area Generation")
     print("=" * 60)
     
-    run_id = f"run_{int(time.time())}"
-    conn = init_db()
+        conn = init_db()
     
     needs = load_unmet_needs()
     print(f"Loaded {len(needs)} unmet needs context.")
@@ -162,5 +162,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_opportunities()
     exit(0 if passed else 1)

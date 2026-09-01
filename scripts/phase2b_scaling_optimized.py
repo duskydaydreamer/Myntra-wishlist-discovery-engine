@@ -6,35 +6,18 @@ import asyncio
 import httpx
 from dotenv import load_dotenv
 
-CACHE_FILE_A = "data/phase2_calibration_cache.json"
-CACHE_FILE_B = "data/phase2b_scaling_cache.json"
-REPORT_FILE = "data/task_2_6b_report.txt"
+import uuid
 
-def load_caches():
-    cache = {}
-    if os.path.exists(CACHE_FILE_A):
-        with open(CACHE_FILE_A, "r") as f:
-            try: cache.update(json.load(f))
-            except: pass
-    if os.path.exists(CACHE_FILE_B):
-        with open(CACHE_FILE_B, "r") as f:
-            try: cache.update(json.load(f))
-            except: pass
-    return cache
-
-def save_cache_sync(cache):
-    with open(CACHE_FILE_B, "w") as f:
-        json.dump(cache, f, indent=2)
-
-def get_candidates():
-    db_path = "data/discovery_pulse.db"
+def get_pending_records(db_path):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     query = """
         SELECT c.cleaned_record_id, c.cleaned_text
         FROM cleaned_records c
+        LEFT JOIN classified_records cr ON c.cleaned_record_id = cr.cleaned_record_id
         WHERE c.is_duplicate = 0 AND c.is_spam = 0 
           AND c.cleaning_flags NOT LIKE '%skipped%'
+          AND cr.cleaned_record_id IS NULL
     """
     candidates = [dict(row) for row in conn.execute(query).fetchall()]
     conn.close()
@@ -139,7 +122,7 @@ def validate_batch(parsed, expected_ids):
         
     return True, "Valid"
 
-async def worker(queue, client, generate_url, system_instruction, rate_limiter, cache_lock, cache_b, stats):
+async def worker(queue, client, generate_url, system_instruction, rate_limiter, db_lock, db_path, stats):
     while True:
         try:
             batch, retries = queue.get_nowait()
@@ -176,53 +159,35 @@ async def worker(queue, client, generate_url, system_instruction, rate_limiter, 
             continue
             
         # Success
-        async with cache_lock:
+        async with db_lock:
             stats["in_tokens"] += usage.get("promptTokenCount", 0)
             stats["out_tokens"] += usage.get("candidatesTokenCount", 0)
             stats["total_tokens"] += usage.get("totalTokenCount", 0)
             stats["successful_records"] += len(parsed)
             
+            conn = sqlite3.connect(db_path)
             for item in parsed:
                 rec_id = item["record_id"]
-                cache_b[rec_id] = {
-                    "success": True,
-                    "parsed": {
-                        "relevance_label": item["relevance_label"],
-                        "signals_detected": item["signals_detected"]
-                    }
-                }
-            save_cache_sync(cache_b)
+                label = item["relevance_label"]
+                signals = json.dumps(item["signals_detected"])
+                class_id = "class_" + str(uuid.uuid4())
+                conn.execute(
+                    "INSERT INTO classified_records (classified_record_id, cleaned_record_id, relevance_label, relevance_confidence, signals_detected) VALUES (?, ?, ?, ?, ?)",
+                    (class_id, rec_id, label, -1.0, signals)
+                )
+            conn.commit()
+            conn.close()
             stats["pending_count"] -= len(batch)
 
-async def main():
-    load_dotenv()
+async def run_classification(db_path="data/discovery_pulse.db"):
     api_key = os.getenv("GEMINI_API_KEY")
     target_model = "models/gemini-3.5-flash-lite"
     generate_url = f"https://generativelanguage.googleapis.com/v1beta/{target_model}:generateContent?key={api_key}"
     
-    candidates = get_candidates()
-    all_cache = load_caches()
+    pending_records = get_pending_records(db_path)
     
-    pending_records = [r for r in candidates if r["cleaned_record_id"] not in all_cache or not all_cache[r["cleaned_record_id"]].get("success")]
-    
-    # Track new cache B only to save
-    cache_b = {}
-    if os.path.exists(CACHE_FILE_B):
-        with open(CACHE_FILE_B, "r") as f:
-            try: cache_b = json.load(f)
-            except: pass
-
     # Compute requested pre-run stats
-    cached_count = len(candidates) - len(pending_records)
-    old_rpm = 4.0
-    proposed_rpm = 60.0 / 5.5
-    estimated_time = (len(pending_records) / 50.0) * (60.0 / proposed_rpm)
-    
-    print(f"Current Cached Successful Records: {cached_count}")
     print(f"Remaining Pending Records: {len(pending_records)}")
-    print(f"Old Effective RPM: {old_rpm:.1f}")
-    print(f"Proposed Effective RPM: {proposed_rpm:.1f}")
-    print(f"Estimated Remaining Execution Time: {estimated_time/60:.1f} minutes\n")
 
     if not pending_records:
         print("All records classified!")
@@ -273,14 +238,14 @@ async def main():
         queue.put_nowait((pending_records[i:i+batch_size], 0))
         
     rate_limiter = RateLimiter(5.5) # start one every 5.5s
-    cache_lock = asyncio.Lock()
+    db_lock = asyncio.Lock()
     
     start_time = time.time()
     
     async with httpx.AsyncClient(timeout=120.0) as client:
         # 2 concurrent workers
         workers = [
-            asyncio.create_task(worker(queue, client, generate_url, system_instruction, rate_limiter, cache_lock, cache_b, stats))
+            asyncio.create_task(worker(queue, client, generate_url, system_instruction, rate_limiter, db_lock, db_path, stats))
             for _ in range(2)
         ]
         
@@ -298,44 +263,11 @@ async def main():
     elapsed = time.time() - start_time
     
     print("\n--- DONE ---")
-    
-    final_cache = load_caches()
-    relevance_counts = {"highly_relevant": 0, "somewhat_relevant": 0, "not_relevant": 0}
-    total_processed = 0
-    
-    for k, v in final_cache.items():
-        if v.get("success"):
-            total_processed += 1
-            relevance_counts[v["parsed"]["relevance_label"]] += 1
-            
-    report = f"""
-======================================================
-FINAL TASK 2.6B SCALING REPORT (OPTIMIZED)
-======================================================
-1. Total Processed (All Time): {total_processed} out of {len(candidates)}
-2. Label Distribution:
-   - highly_relevant: {relevance_counts['highly_relevant']}
-   - somewhat_relevant: {relevance_counts['somewhat_relevant']}
-   - not_relevant: {relevance_counts['not_relevant']}
-3. Failures / Errors (This Run):
-   - Malformed Responses: {stats['failed_batches']}
-   - Retries Triggered: {stats['retries']}
-   - 429 Rate Limits Hit: {stats['429s']}
-   - Unresolved Records (Pending): {stats['pending_count']}
-4. API Usage (This Run):
-   - Requests Made: {stats['requests']}
-5. Token Usage (This Run):
-   - Input Tokens: {stats['in_tokens']}
-   - Output Tokens: {stats['out_tokens']}
-   - Total Tokens: {stats['total_tokens']}
-6. Elapsed Time: {elapsed:.2f} seconds
-7. Remaining Pending Records: {stats['pending_count']}
-8. Systematic Issues Observed: None. Optimized concurrency handled properly.
-"""
-    with open(REPORT_FILE, "w") as f:
-        f.write(report)
-        
-    print(f"\nFinal report written to {REPORT_FILE}", flush=True)
+    return stats
+
+async def main():
+    load_dotenv()
+    await run_classification()
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -5,8 +5,10 @@ from sentence_transformers import SentenceTransformer
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(BASE_DIR, "data", "chroma"))
 
-# Lazy loaded embedding model
+# Lazy loaded models - initialized on first request, not at startup
 _embedding_model = None
+_chroma_client = None
+_collection = None
 
 def get_embedding_model():
     global _embedding_model
@@ -17,19 +19,24 @@ def get_embedding_model():
             _embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
     return _embedding_model
 
-chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-collection = chroma_client.get_collection("observation_embeddings")
+def get_collection():
+    global _chroma_client, _collection
+    if _collection is None:
+        _chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+        _collection = _chroma_client.get_or_create_collection("observation_embeddings")
+    return _collection
 
 def retrieve_semantic_evidence(query_text: str, eligible_ids: set, top_k: int = 20) -> list:
     """
     Given a query text and a set of eligible observation IDs (from SQLite filters),
     retrieve the top_k most semantically similar IDs from ChromaDB.
     """
+    collection = get_collection()
+
     # 1. Embed query
     query_embedding = get_embedding_model().encode(query_text).tolist()
     
     # 2. Query ChromaDB for a large number of results (since we need to intersect with eligible_ids)
-    # We query up to min(10000, collection.count()) to ensure we get enough candidates
     max_results = min(10000, collection.count())
     if max_results == 0:
         return []

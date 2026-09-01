@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api.routers import dashboard, evidence, themes, clusters, opportunities, query, unmet_needs, pipeline, knowledge_graph, meta
+from backend.api.routers import dashboard, evidence, themes, clusters, opportunities, query, unmet_needs, pipeline, knowledge_graph, meta, internal
 
 app = FastAPI(
     title="Myntra Discovery Pulse API",
@@ -40,5 +40,6 @@ api_router.include_router(unmet_needs.router, prefix="/unmet-needs", tags=["Unme
 api_router.include_router(pipeline.router, prefix="/pipeline", tags=["Pipeline"])
 api_router.include_router(knowledge_graph.router, prefix="/knowledge-graph", tags=["Knowledge Graph"])
 api_router.include_router(meta.router, prefix="/meta", tags=["Metadata"])
+api_router.include_router(internal.router, prefix="/internal/pipeline", tags=["Internal"])
 
 app.include_router(api_router)

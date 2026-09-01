@@ -235,13 +235,13 @@ def write_jsonl(path, data):
             f.write(json.dumps(item) + "\n")
 
 
-def main():
+def run_predefined_mapping(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.2 — Predefined Semantic Theme Mapping")
     print("=" * 60)
     
-    run_id = f"run_{int(time.time())}"
-    threshold_version = "v1_cosine_0.45"
+        threshold_version = "v1_cosine_0.45"
     
     # 1. Init DB
     conn = init_db()
@@ -365,5 +365,5 @@ def main():
     return gate_pass
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_predefined_mapping()
     exit(0 if passed else 1)

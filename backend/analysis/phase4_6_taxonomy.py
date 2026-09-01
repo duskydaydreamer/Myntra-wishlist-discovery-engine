@@ -20,7 +20,8 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "data", "phase4")
 RC_TAXONOMY_PATH = os.path.join(OUTPUT_DIR, "root_cause_taxonomy.json")
 UN_TAXONOMY_PATH = os.path.join(OUTPUT_DIR, "unmet_need_taxonomy.json")
 
-def main():
+def run_taxonomy(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.6 — Taxonomy Generation")
     print("=" * 60)
@@ -63,5 +64,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_taxonomy()
     exit(0 if passed else 1)

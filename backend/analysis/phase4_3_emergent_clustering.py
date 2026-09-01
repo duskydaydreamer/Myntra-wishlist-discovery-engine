@@ -95,13 +95,13 @@ def write_jsonl(path, data):
             f.write(json.dumps(item) + "\n")
 
 
-def main():
+def run_emergent_clustering(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.3 — Emergent Semantic Pattern Discovery")
     print("=" * 60)
     
-    run_id = f"run_{int(time.time())}"
-    now_iso = datetime.now(timezone.utc).isoformat()
+        now_iso = datetime.now(timezone.utc).isoformat()
     
     # 1. DB setup
     conn = init_db()
@@ -252,5 +252,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_emergent_clustering()
     exit(0 if passed else 1)

@@ -74,6 +74,14 @@ class ClassifiedRecord(Base):
     relevance_confidence: Mapped[float] = mapped_column(sa.Float, nullable=False)
     signals_detected: Mapped[Optional[str]] = mapped_column(sa.JSON, nullable=True)
 
+class ExtractionTracker(Base):
+    __tablename__ = "extraction_tracker"
+    
+    cleaned_record_id: Mapped[str] = mapped_column(sa.String, sa.ForeignKey("cleaned_records.cleaned_record_id"), primary_key=True)
+    status: Mapped[str] = mapped_column(sa.String, nullable=False)
+    observation_count: Mapped[int] = mapped_column(sa.Integer, default=0, nullable=False)
+    completed_at: Mapped[datetime] = mapped_column(sa.DateTime, default=datetime.utcnow, nullable=False)
+
 class Observation(Base):
     __tablename__ = "observations"
     

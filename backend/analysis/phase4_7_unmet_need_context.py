@@ -92,7 +92,8 @@ def process_unmet_need(conn, un, cluster_ids):
     }
 
 
-def main():
+def run_unmet_need_context(run_id="run_latest"):
+    db_path = "data/discovery_pulse.db"
     print("=" * 60)
     print("PHASE 4 TASK 4.7 — Unmet-Need Contextualization")
     print("=" * 60)
@@ -143,5 +144,5 @@ def main():
 
 
 if __name__ == "__main__":
-    passed = main()
+    passed = run_unmet_need_context()
     exit(0 if passed else 1)
