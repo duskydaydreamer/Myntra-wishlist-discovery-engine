@@ -1,0 +1,36 @@
+data/
+.env
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+.next/
+out/
+build/
+*.log
+
+# Python
+venv/
+.venv/
+env/
+.pytest_cache/
+*.sqlite
+*.sqlite3
+*.db
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
+.codex_slide_build/
+
+# Secrets & Local
+*secret*
+*key*
+build_output.txt
+build_output2.txt
+git-status.txt
+pytest_output.txt
+repair_debug.log
+audit.log

@@ -1,0 +1,72 @@
+ingestion:
+  app_store_window_weeks: 12
+  play_store_window_weeks: 12
+  record_window_start: true
+  record_window_end: true
+
+  sources_enabled:
+    - play_store
+    - app_store
+    - reddit
+    - youtube
+
+  reddit_threads:
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/14r29cl/show_me_ur_myntra_wishlist/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/14k5wqe/do_you_guys_buy_from_myntra_how_do_you_discover/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/1osrk03/myntra_is_deleting_reviews_from_the_listed/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/16ccycw/i_was_checking_myntra_for_a_shirt_and_came_across/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/159bh63/size_difference_help/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/15x8thm/recommend_me_brands_from_myntra/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/132mwar/myntra_hikes_prices_after_product_is_added_to_the/
+    - https://www.reddit.com/r/IndianFashionAddicts/comments/14cbt53/whats_going_on_with_myntra/
+
+  youtube_search_queries:
+    - "Myntra haul"
+    - "Myntra try on haul"
+    - "Myntra clothing haul"
+    - "Myntra sizing review"
+    - "Myntra size review"
+    - "Myntra quality review"
+    - "Myntra honest review"
+    - "Myntra dress haul"
+    - "Myntra jeans review"
+    - "Myntra wedding outfits"
+    - "Myntra vs AJIO"
+
+ai:
+  classification:
+    provider: "gemini"
+    model: "gemini-3.7-flash"
+  extraction:
+    provider: "gemini"
+    model: "gemini-3.7-flash"
+  synthesis:
+    provider: "gemini"
+    model: "gemini-3.7-flash"
+  embedding:
+    provider: configurable
+    model: configurable
+  prompt_version: "v1"
+
+thresholds:
+  relevance_confidence_min: 0.70
+  observation_confidence_min: 0.60
+  min_observations_for_theme: 10
+  min_observations_for_opportunity: 15
+  near_duplicate_similarity: 0.92
+  min_extraction_success_rate: 0.85
+
+privacy:
+  pii_masking_enabled: true
+  entities_to_mask:
+    - PERSON
+    - EMAIL
+    - PHONE_NUMBER
+    - LOCATION
+    - URL_WITH_CREDENTIALS
+
+storage:
+  db_url: "sqlite:///data/discovery_pulse.db"
+  vector_store: "chromadb"
+  file_store: "local"
+  file_store_path: "data/"

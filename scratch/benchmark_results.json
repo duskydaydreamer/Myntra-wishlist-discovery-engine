@@ -1,0 +1,218 @@
+[
+  {
+    "question": "What delivery or return friction do users describe?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "primary_barrier": [
+        "fulfillment",
+        "returns"
+      ]
+    },
+    "evidence_count": 0,
+    "unique_source_count": 0,
+    "eligible_subset_size": 0,
+    "answer": "No supporting evidence was found for the current filters.",
+    "time": 3.4995059967041016
+  },
+  {
+    "question": "How do shoppers compare products before deciding?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "wishlist_intent": [
+        "comparison"
+      ],
+      "journey_stage": [
+        "evaluation"
+      ]
+    },
+    "evidence_count": 0,
+    "unique_source_count": 0,
+    "eligible_subset_size": 0,
+    "answer": "No supporting evidence was found for the current filters.",
+    "time": 2.145409107208252
+  },
+  {
+    "question": "How do users research products outside Myntra before buying?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "journey_stage": [
+        "discovery",
+        "evaluation"
+      ]
+    },
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "Based on the provided observations, there is only a single piece of evidence addressing how users research products before buying. \n\nHere is the evidence from the database:\n\n- \ud83d\udccc What users said: \"buy from Myntra u can see reviews\"\n- \ud83d\udd0d Inferred behavior: Users rely on checking user reviews on the platform to evaluate products before making a purchase.\n- \ud83d\udca1 Possible unmet need: Users need easily accessible, reliable, and transparent customer reviews to validate product quality and authenticity before committing to a purchase.",
+    "time": 4.566866874694824
+  },
+  {
+    "question": "What do users say about App Navigation & Filters?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "semantic_only",
+    "applied_filters": {},
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "Based on the provided user observations, here is what users say about App Navigation & Filters:\n\n### Evidence\n\n* **Observation 1**\n  \ud83d\udccc What users said: \"The app has a clean and user-friendly interface, making it easy to browse and shop.\"\n  \ud83d\udd0d Inferred behavior: Users interact with a clean and user-friendly layout to easily navigate and complete shopping tasks.\n  \ud83d\udca1 Possible unmet need: Maintain the current clean interface standards as catalog sizes grow.\n\n* **Observation 2**\n  \ud83d\udccc What users said: \"The app is very user-friendly, making it easy to browse through thousands of products across different categories\"\n  \ud83d\udd0d Inferred behavior: Users fluidly explore large volumes of products across diverse categories due to the app's usability.\n  \ud83d\udca1 Possible unmet need: Continued efficiency in categorizing and surfacing large product volumes.\n\n* **Observation 3**\n  \ud83d\udccc What users said: \"The app is very user-friendly, making it easy to browse, compare products, and place orders.\"\n  \ud83d\udd0d Inferred behavior: Users utilize the interface to browse items, evaluate comparisons, and execute purchases smoothly.\n  \ud83d\udca1 Possible unmet need: Enhanced tools to support side-by-side product comparisons during the browsing phase.\n\n* **Observation 4**\n  \ud83d\udccc What users said: \"Great apps have clear filters for price, size, and brand. Myntra is tooo good\"\n  \ud83d\udd0d Inferred behavior: Users rely heavily on clear, specific filter criteria (price, size, brand) to navigate choices positively.\n  \ud83d\udca1 Possible unmet need: Ensure clarity and responsiveness across all filter attributes as inventory updates.\n\n* **Observation 5**\n  \ud83d\udccc What users said: \"Just installed the Myntra app, and my first impression is really good. The app looks clean, is easy to navigate, and has a huge collection of fashion and lifestyle products. Browsing is smooth\"\n  \ud83d\udd0d Inferred behavior: New users quickly experience frictionless navigation and smooth exploration of a massive fashion catalog.\n  \ud83d\udca1 Possible unmet need: Onboarding features that sustain first-impression ease of use for deep catalog exploration.\n\n* **Observation 6**\n  \ud83d\udccc What users said: \"The products are easy to browse, and the filters and size options make shopping more convenient.\"\n  \ud83d\udd0d Inferred behavior: Users combine browsing, filtering, and size selection options to streamline their shopping convenience.\n  \ud83d\udca1 Possible unmet need: Tighter integration between filter parameters and size availability.\n\n* **Observation 7**\n  \ud83d\udccc What users said: \"Collection-wise, myntra might be few steps ahead and they have incredibly well built up APP with filters almost unseen elsewhere!\"\n  \ud83d\udd0d Inferred behavior: Users actively compare the app's filter mechanics favorably against competitor platforms.\n  \ud83d\udca1 Possible unmet need: Continuous innovation in filtering capabilities to maintain a competitive advantage.\n\n* **Observation 8**\n  \ud83d\udccc What users said: \"interface and filters have improved a lot even the descriptions and size guide is very user friendly\"\n  \ud83d\udd0d Inferred behavior: Users notice and benefit from iterative improvements made to the user interface, filters, and sizing details.\n  \ud83d\udca1 Possible unmet need: Regular updates and clear communication regarding interface and filter enhancements.\n\n* **Observation 9**\n  \ud83d\udccc What users said: \"Best Filter criteria across all clothing apps.\"\n  \ud83d\udd0d Inferred behavior: Users rate the filter criteria as superior compared to the broader market of clothing applications.\n  \ud83d\udca1 Possible unmet need: Preservation of high filter accuracy and relevance across product categories.\n\n* **Observation 16**\n  \ud83d\udccc What users said: \"Smooth & Reliable App Myntra app use karne me bohot easy hai. App fast chalti hai, products ki variety [NAME] filters bhi accurate\"\n  \ud83d\udd0d Inferred behavior: Users experience fast app performance paired with reliable, accurate product filtering.\n  \ud83d\udca1 Possible unmet need: Stable app performance and fast load times to support real-time filter adjustments.",
+    "time": 6.262752056121826
+  },
+  {
+    "question": "Why do shoppers hesitate to buy shoes online?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "primary_barrier": [
+        "fit_and_sizing",
+        "price",
+        "trust"
+      ],
+      "journey_stage": [
+        "evaluation"
+      ]
+    },
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "Based on the provided user observations, shoppers experience hesitation or face barriers related to trust and pricing when considering online purchases (including shoes and other items). \n\nBelow is the evidence extracted from the observations:\n\n### Evidence Item 1\n* \ud83d\udccc What users said: \"some shoes product fake there delivering\"\n* \ud83d\udd0d Inferred behavior: Questioning the authenticity of footwear products and worrying about receiving counterfeit items.\n* \ud83d\udca1 Possible unmet need: A reliable way to verify the authenticity of shoes and products before purchasing.\n\n### Evidence Item 2\n* \ud83d\udccc What users said: \"Today I wanted to order a what the all discounts of sale are gone for those shoes Why??? sale is still going to last 4 hours so why those offers a deducted???\"\n* \ud83d\udd0d Inferred behavior: Hesitating or abandoning purchases when promotional discounts unexpectedly disappear while a sale is still active.\n* \ud83d\udca1 Possible unmet need: Transparent, stable, and predictable pricing and discount periods during active sales events.\n\n### Evidence Item 3\n* \ud83d\udccc What users said: \"Increases the price of items that are on your wish list.Size chars are always confus\u00edng.You almost every time get the sizes of \u00e7lothes wrong .Their delivery partner is the worst\"\n* \ud83d\udd0d Inferred behavior: Hesitating to complete purchases due to fluctuating wish list prices, unclear sizing charts leading to wrong sizes, and poor delivery experiences.\n* \ud83d\udca1 Possible unmet need: Consistent pricing for saved items, clearer and more accurate sizing guides, and reliable delivery services.",
+    "time": 4.428139925003052
+  },
+  {
+    "question": "What fit-related evidence comes from YouTube?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "source": [
+        "YouTube"
+      ],
+      "primary_barrier": [
+        "fit_and_sizing"
+      ]
+    },
+    "evidence_count": 0,
+    "unique_source_count": 0,
+    "eligible_subset_size": 0,
+    "answer": "No supporting evidence was found for the current filters.",
+    "time": 2.225939989089966
+  },
+  {
+    "question": "What barriers appear among high-purchase-intent observations?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "purchase_intent": [
+        "high"
+      ]
+    },
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "Based on the provided observations, the barriers that appear among the users are related to delivery and price. Below is the exact evidence supporting these barriers:\n\n### Barrier: Delivery\n\n*   **Observation 1**\n    *   \ud83d\udccc What users said: \"wide range of brands and attractive discounts However occasional delivery and customer service issues can affect the shopping experience\"\n    *   \ud83d\udd0d Inferred behavior: The user experiences occasional disruptions to their shopping experience due to delivery issues, despite appreciating the brand range and discounts.\n    *   \ud83d\udca1 Possible unmet need: More reliable and consistent delivery execution to prevent disruption of the shopping experience.\n\n*   **Observation 20**\n    *   \ud83d\udccc What users said: \"being a myntra customer from 2011 ...I trust them for offering products exactly as per my choice...just need to improve on delivery time\"\n    *   \ud83d\udd0d Inferred behavior: The long-term customer maintains trust in product selection but is dissatisfied with the speed of delivery.\n    *   \ud83d\udca1 Possible unmet need: Faster delivery times to match the high level of trust and satisfaction with product choices.\n\n---\n\n### Barrier: Price\n\n*   **Observation 10**\n    *   \ud83d\udccc What users said: \"product are very High, branded products\"\n    *   \ud83d\udd0d Inferred behavior: The user perceives the prices of branded products on the platform to be very high.\n    *   \ud83d\udca1 Possible unmet need: More affordable pricing options or accessible discounts for branded products.",
+    "time": 4.6531713008880615
+  },
+  {
+    "question": "What are the pain points during checkout?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "journey_stage": [
+        "checkout"
+      ],
+      "decision_outcome": [
+        "abandoned"
+      ]
+    },
+    "evidence_count": 0,
+    "unique_source_count": 0,
+    "eligible_subset_size": 0,
+    "answer": "No supporting evidence was found for the current filters.",
+    "time": 1.881951093673706
+  },
+  {
+    "question": "How many observations mention fit?",
+    "status": "PASS",
+    "query_type": "count_filter",
+    "retrieval_mode": "deterministic",
+    "applied_filters": {
+      "primary_barrier": [
+        "fit",
+        "fit_and_sizing"
+      ]
+    },
+    "evidence_count": 627,
+    "unique_source_count": 627,
+    "eligible_subset_size": 0,
+    "answer": "Found 627 observation(s) matching the criteria out of 9171 total.",
+    "time": 0.05829787254333496
+  },
+  {
+    "question": "What percentage of the evidence has price as the primary barrier?",
+    "status": "PASS",
+    "query_type": "count_filter",
+    "retrieval_mode": "deterministic",
+    "applied_filters": {
+      "primary_barrier": [
+        "price"
+      ]
+    },
+    "evidence_count": 894,
+    "unique_source_count": 894,
+    "eligible_subset_size": 0,
+    "answer": "Found 894 observation(s) matching the criteria out of 9171 total.",
+    "time": 0.05505108833312988
+  },
+  {
+    "question": "What sizing problems do Reddit users report?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "filtered_semantic",
+    "applied_filters": {
+      "source": [
+        "Reddit"
+      ],
+      "primary_barrier": [
+        "fit_and_sizing"
+      ]
+    },
+    "evidence_count": 0,
+    "unique_source_count": 0,
+    "eligible_subset_size": 0,
+    "answer": "No supporting evidence was found for the current filters.",
+    "time": 1.730287790298462
+  },
+  {
+    "question": "Tell me something interesting about users.",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "semantic_only",
+    "applied_filters": {},
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "Based on the provided user observations, here is what is interesting about users:\n\n* Users are motivated to provide genuine feedback when they are incentivized with rewards like MynCash.\n  * \ud83d\udccc What users said: \"I really like that it rewards users with MynCash for reviews and ratings, which encourages genuine feedback.\"\n  * \ud83d\udd0d Inferred behavior: Users actively participate in reviewing products when tangible incentives are offered, valuing the reward system.\n  * \ud83d\udca1 Possible unmet need: A desire for ongoing, rewarding feedback loops that acknowledge user contributions to the platform ecosystem.\n\n* Users specifically value transparency regarding peer experiences, noting that text and photo reviews are a major differentiator for building trust and attracting them to shop.\n  * \ud83d\udccc What users said: \"myntra has the great ux as compared to [NAME] , [NAME] never shows the user reviews text and photos, and myntra does, that is the most major difference that attracts me to shop on mhyntra always,\"\n  * \ud83d\udd0d Inferred behavior: Users rely heavily on detailed peer validation (including photos and text) when making purchasing decisions and comparing platforms.\n  * \ud83d\udca1 Possible unmet need: A need for comprehensive, authentic visual and textual proof from other buyers to make confident purchasing decisions.\n\n* Users experience fashion apps not just for transactions, but as tools that actively shape their personal identity and self-assurance.\n  * \ud83d\udccc What users said: \"helped me discover, refine, and build confidence in my personal style.\"\n  * \ud83d\udd0d Inferred behavior: Users use the platform as an exploratory tool for self-expression rather than just a functional marketplace.\n  * \ud83d\udca1 Possible unmet need: A desire for guided style evolution, inspiration, and tools that foster personal confidence.",
+    "time": 5.1452882289886475
+  },
+  {
+    "question": "What feature should Myntra build?",
+    "status": "PASS",
+    "query_type": "evidence_explanatory",
+    "retrieval_mode": "semantic_only",
+    "applied_filters": {},
+    "evidence_count": 20,
+    "unique_source_count": 2,
+    "eligible_subset_size": 0,
+    "answer": "I cannot directly recommend a feature for Myntra to build. As a qualitative research assistant, I can only provide the root causes, barriers, and unmet needs derived from the user observations.\n\nBelow is the synthesis of user feedback regarding their experiences, barriers, and needs:\n\n---\n\n### Evidence Synthesis\n\n**Observation 1**\n- \ud83d\udccc What users said: \"quality product and quality experience with myntra\"\n- \ud83d\udd0d Inferred behavior: Expressing overall satisfaction with the product and platform experience.\n- \ud83d\udca1 Possible unmet need: Maintaining consistently high-quality standards across all product offerings and services.\n\n**Observation 2**\n- \ud83d\udccc What users said: \"Myntra in terms of quality is unbeatable\"\n- \ud83d\udd0d Inferred behavior: Comparing Myntra favorably against competitors regarding product standards.\n- \ud83d\udca1 Possible unmet need: Sustaining competitive product quality to retain customer loyalty.\n\n**Observation 3**\n- \ud83d\udccc What users said: \"Great experience with myntra till now. No quality compromise,\"\n- \ud83d\udd0d Inferred behavior: Experiencing satisfaction with product standards without facing quality-related compromises.\n- \ud83d\udca1 Possible unmet need: Ensuring strict quality assurance so that standards never drop.\n\n**Observation 4**\n- \ud83d\udccc What users said: \"Myntra quality is good so money is needed\"\n- \ud83d\udd0d Inferred behavior: Recognizing that higher quality commands a corresponding financial cost.\n- \ud83d\udca1 Possible unmet need: Transparent justification or communication regarding pricing relative to the offered quality.\n\n**Observation 5**\n- \ud83d\udccc What users said: \"Myntra is having good quality.\"\n- \ud83d\udd0d Inferred behavior: Acknowledging the standard of items available on the platform.\n- \ud83d\udca1 Possible unmet need: Continuation of reliable and satisfactory product manufacturing/sourcing standards.\n\n**Observation 6**\n- \ud83d\udccc What users said: \"Myntra's ui far better then\"\n- \ud83d\udd0d Inferred behavior: Finding the application interface superior to alternative platforms.\n- \ud83d\udca1 Possible unmet need: Keeping the user interface smooth, intuitive, and ahead of competitors.\n\n**Observation 7**\n- \ud83d\udccc What users said: \"myntra have better quality\"\n- \ud83d\udd0d Inferred behavior: Valuing the platform for superior product standards.\n- \ud83d\udca1 Possible unmet need: Consistent availability of high-grade merchandise.\n\n**Observation 8**\n- \ud83d\udccc What users said: \"myntra is too good quality thanks myntra\"\n- \ud83d\udd0d Inferred behavior: Expressing direct appreciation for the standard of goods received.\n- \ud83d\udca1 Possible unmet need: Ongoing appreciation and reinforcement of quality trust.\n\n**Observation 9**\n- \ud83d\udccc What users said: \"Myntra is my absolute go-to platform for all fashion and beauty needs. They have an amazing collection of authentic brands and the latest trends. The user interface is very smooth, delivery is always on time, and returns are completely hassle-free.\"\n- \ud83d\udd0d Inferred behavior: Relying on the platform for comprehensive fashion/beauty shopping, seamless navigation, timely fulfillment, and easy returns.\n- \ud83d\udca1 Possible unmet need: Maintenance of authentic brand inventories, smooth UI, reliable delivery schedules, and friction-free return policies.\n\n**Observation 10**\n- \ud83d\udccc What users said: \"Myntra is best but not depend this price ok\"\n- \ud83d\udd0d Inferred behavior: Praising the platform's overall quality while expressing caution or hesitation regarding pricing.\n- \ud83d\udca1 Possible unmet need: Clear pricing structures, discounts, or value options that accommodate cost-conscious perspectives.\n\n**Observation 11**\n- \ud83d\udccc What users said: \"I like the most about myntra is about quality and trust\"\n- \ud83d\udd0d Inferred behavior: Associating the platform strongly with reliability and high product standards.\n- \ud83d\udca1 Possible unmet need: Preserving brand trust and product consistency to protect customer relationships.\n\n**Observation 12**\n- \ud83d\udccc What users said: \"I love myntra is very nice\"\n- \ud83d\udd0d Inferred behavior: Expressing generalized positive sentiment toward the platform.\n- \ud83d\udca1 Possible unmet need: Sustaining overall platform appeal and user satisfaction.\n\n**Observation 13**\n- \ud83d\udccc What users said: \"Myntra always best in quality\"\n- \ud83d\udd0d Inferred behavior: Consistently viewing the platform as a leader in product standards.\n- \ud83d\udca1 Possible unmet need: Unwavering adherence to top-tier quality benchmarks.\n\n**Observation 14**\n- \ud83d\udccc What users said: \"MYNTRA is my favourite app. because it has many good things and a very good return policy, branded products which leads to customer satisfaction.\"\n- \ud83d\udd0d Inferred behavior: Utilizing specific features like return policies and branded inventory, leading to high satisfaction.\n- \ud83d\udca1 Possible unmet need: Preservation of customer-friendly return policies and access to genuine branded goods.\n\n**Observation 15**\n- \ud83d\udccc What users said: \"Myntra quality is always best\"\n- \ud83d\udd0d Inferred behavior: Reiterating trust in the consistent excellence of platform products.\n- \ud83d\udca1 Possible unmet need: Ensuring long-term quality control across all inventory additions.\n\n**Observation 16**\n- \ud83d\udccc What users said: \"myntra is just so good online platform, it provides such great things in such an affordable price\"\n- \ud83d\udd0d Inferred behavior: Appreciating the balance of good product offerings and accessible pricing.\n- \ud83d\udca1 Possible unmet need: Maintaining an optimal balance between affordability and product value.\n\n**Observation 17**\n- \ud83d\udccc What users said: \"each and every thing in myntra is the best and excellent quality\"\n- \ud83d\udd0d Inferred behavior: Experiencing complete satisfaction across all purchased categories.\n- \ud83d\udca1 Possible unmet need: Universal quality oversight across all catalog categories.\n\n**Observation 18**\n- \ud83d\udccc What users said: \"Myntra quality is better don't u think?\"\n- \ud83d\udd0d Inferred behavior: Highlighting superior quality as a distinct differentiator.\n- \ud83d\udca1 Possible unmet need: Continual public validation or assurance of product superiority.\n\n**Observation 19**\n- \ud83d\udccc What users said: \"i just love myntra. It's so reliable\"\n- \ud83d\udd0d Inferred behavior: Placing high trust in the platform's dependability.\n- \ud83d\udca1 Possible unmet need: Sustaining operational reliability in delivery, service, and product standards.\n\n**Observation 20**\n- \ud83d\udccc What users said: \"myntra is better in terms of quality of the product.\"\n- \ud83d\udd0d Inferred behavior: Pointing to product quality as a primary reason for preferring the platform.\n- \ud83d\udca1 Possible unmet need: Ongoing focus on product standard enforcement over cost-cutting.",
+    "time": 7.567884206771851
+  }
+]

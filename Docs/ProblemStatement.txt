@@ -1,0 +1,1137 @@
+# Problem Statement: Myntra Wishlist Discovery Pulse
+
+## Overview
+
+The objective of this project is to build an **AI-powered discovery engine** that helps Product Managers understand why users add fashion products to their Myntra wishlist but do not eventually purchase them.
+
+A wishlist represents an important behavioral signal because the user has expressed interest in a product but has stopped short of purchasing it.
+
+The broader business context is to improve:
+
+**Wishlist → Purchase Conversion within 30 days**
+
+However, the underlying user problem is not known.
+
+The purpose of this system is to analyze public user conversations at scale and discover:
+
+* why users add fashion products to their wishlist
+* what prevents wishlisted products from being purchased
+* what uncertainties remain before purchase
+* what causes users to postpone purchase decisions
+* how users compare shortlisted products
+* what information users seek before purchasing
+* what users do outside Myntra before deciding
+* what workarounds users currently use
+* how these behaviors differ across user segments
+* which recurring unmet needs emerge from user conversations
+* which potential opportunity areas have the strongest supporting evidence
+
+The system should go beyond sentiment analysis and generic review summarization.
+
+It should convert unstructured public user conversations into **structured, evidence-backed product insights** that can be explored through:
+
+1. a **Discovery Pulse Dashboard**
+2. an **Evidence Explorer**
+3. a **Grounded Query Interface**
+
+---
+
+## Product Context
+
+**Product:** Myntra
+
+**Project Name:** Myntra Wishlist Discovery Pulse
+
+**Primary Users of the System:** Product Managers, Growth Teams, User Researchers, and Designers
+
+The relevant business metric is:
+
+**Percentage of users who purchase at least one wishlisted item within 30 days of adding it.**
+
+The AI Discovery Engine does not directly improve this metric.
+
+Its purpose is to discover the user behaviors, barriers, uncertainties, and unmet needs that may influence it.
+
+---
+
+# Objective
+
+Design and implement an AI-powered system that can:
+
+1. Collect or import public conversations related to Myntra and online fashion shopping.
+2. Import Myntra App Store and Play Store reviews from the **most recent 12 weeks**.
+3. Clean, normalize, deduplicate, and privacy-filter collected data.
+4. Identify conversations that contain useful shopping-decision evidence.
+5. Extract structured behavioral observations using AI.
+6. Identify recurring wishlist motivations, purchase barriers, uncertainties, workarounds, and decision behaviors.
+7. Discover patterns across different behavioral user segments.
+8. Group related observations into recurring themes.
+9. Identify root causes and possible unmet needs within those themes.
+10. Convert recurring unresolved problems into potential opportunity areas.
+11. Quantify recurring patterns where the available evidence allows it.
+12. Preserve supporting evidence for every important insight.
+13. Present findings through a Discovery Pulse Dashboard.
+14. Allow Product Managers to inspect the underlying evidence.
+15. Allow Product Managers to investigate the evidence through a Grounded Query Interface.
+16. Support exploratory queries that surface implicit user needs even when users do not explicitly request features.
+
+---
+
+# Core Research Questions
+
+The system should help answer questions such as:
+
+* Why do users add fashion products to their wishlist?
+* When does a wishlist represent genuine purchase intent?
+* When is a wishlist being used as a bookmark, inspiration board, comparison list, or price tracker?
+* What prevents wishlisted products from eventually being purchased?
+* What uncertainties remain after users have identified a product they like?
+* What causes users to postpone a purchase?
+* How do users compare multiple shortlisted products?
+* What information do users look for before deciding to purchase?
+* What information do users seek outside Myntra?
+* What role do fit and size play in purchase hesitation?
+* What role does product quality play?
+* What role do reviews and ratings play?
+* What role does styling uncertainty play?
+* What role does occasion suitability play?
+* What role does price or purchase timing play?
+* What role does social validation play?
+* What role do delivery, returns, exchanges, and trust play?
+* What workarounds do users currently use?
+* How do these behaviors differ across user types?
+* What implicit unmet needs appear repeatedly?
+* Which opportunity areas have the strongest supporting evidence?
+
+---
+
+# Target Users
+
+| User               | Need                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| Product Managers   | Discover and investigate user problems from large volumes of public feedback         |
+| Growth Teams       | Understand barriers that may prevent wishlist interest from converting into purchase |
+| User Researchers   | Identify hypotheses and behavioral segments that require deeper research             |
+| Designers          | Understand user uncertainties, decision processes, and workarounds                   |
+| Product Leadership | Review evidence-backed opportunity areas without reading thousands of conversations  |
+
+---
+
+# End-to-End Flow
+
+The expected system flow is:
+
+```text
+Public User Conversations
+        ↓
+Data Ingestion
+        ↓
+Cleaning + Normalization
+        ↓
+Deduplication + Privacy Filtering
+        ↓
+Relevance Classification
+        ↓
+Structured AI Research Extraction
+        ↓
+Theme Grouping
+        ↓
+Root-Cause + Unmet-Need Discovery
+        ↓
+Opportunity Quantification
+        ↓
+Evidence Store
+        ↓
+┌─────────────────────────────┐
+│ Discovery Pulse Dashboard   │
+└─────────────────────────────┘
+
+┌─────────────────────────────┐
+│ Evidence Explorer           │
+└─────────────────────────────┘
+
+┌─────────────────────────────┐
+│ Grounded Query Interface    │
+└─────────────────────────────┘
+```
+
+---
+
+# What the System Must Build
+
+## 1. Discovery Pulse Dashboard
+
+The Discovery Pulse Dashboard should help a Product Manager quickly scan what patterns are emerging across the analyzed conversations.
+
+The dashboard should include:
+
+* total raw conversations collected
+* total cleaned conversations
+* total relevant conversations
+* total structured observations
+* source distribution
+* review analysis window
+* earliest and latest review date
+* Myntra-specific vs broader online fashion-shopping evidence
+* top wishlist motivations
+* top recurring themes
+* top purchase barriers
+* top user uncertainties
+* top information needs
+* top workarounds
+* top external research behaviors
+* recurring behavioral segments
+* emerging opportunity areas
+* representative supporting user quotes
+
+The dashboard should answer:
+
+**What patterns are repeatedly emerging across user conversations?**
+
+Useful filters may include:
+
+* source
+* wishlist intent
+* purchase intent
+* purchase barrier
+* theme
+* behavioral segment
+* product category
+* journey stage
+* Myntra-specific vs category-level evidence
+
+---
+
+## 2. Evidence Explorer
+
+The Evidence Explorer should allow Product Managers to inspect the evidence behind important findings.
+
+Each evidence item should display, where available:
+
+* anonymized supporting quote
+* source
+* source type
+* source URL
+* published date
+* wishlist intent
+* purchase intent
+* theme
+* purchase barrier
+* root cause
+* uncertainty
+* information needed
+* workaround
+* behavioral segment
+* AI confidence
+
+Every major insight shown by the system should be traceable back to supporting evidence.
+
+---
+
+## 3. Grounded Query Interface
+
+The Query Interface should allow Product Managers to investigate the analyzed dataset using natural-language questions.
+
+Example queries:
+
+* Why do users add products to wishlists?
+* What prevents high-intent users from purchasing?
+* Why do users postpone fashion purchases?
+* What are the common causes of fit uncertainty?
+* How do users compare shortlisted products?
+* What information do users seek outside Myntra?
+* What workarounds do users use when reviews are not enough?
+* Which segments show the strongest fit-related uncertainty?
+* Compare fit uncertainty with comparison difficulty.
+* Show evidence related to occasion-based shopping.
+* What unmet needs appear repeatedly?
+* Which opportunity areas have the strongest supporting evidence?
+
+The Query Interface must answer using the analyzed evidence corpus.
+
+It should not answer research questions purely from the LLM's general knowledge.
+
+Each answer should include, where appropriate:
+
+* direct answer
+* supporting evidence
+* anonymized user quotes
+* source references
+* relevant counts
+* important caveats
+* distinction between observed evidence and AI interpretation
+
+---
+
+# Exploratory Query Capability
+
+Users do not always explicitly request features.
+
+For example, a user may never say:
+
+> “I want Myntra to remind me about products in my wishlist.”
+
+Instead, they may describe a behavior such as:
+
+> “I had saved a dress earlier but completely forgot about it.”
+
+or:
+
+> “I had too many things saved and couldn't remember which ones I actually wanted.”
+
+The Query Interface should therefore support **exploratory product-discovery questions** that search for behaviors, frustrations, or repeated situations that may indicate an underlying unmet need.
+
+Example queries:
+
+* Find conversations where users mention forgetting about products they previously liked, saved, or intended to buy.
+* Find evidence that users lose track of products after saving many items.
+* Find conversations where users repeatedly revisit a product but still do not purchase.
+* Find users who struggle to choose between several shortlisted products.
+* Find users who leave the shopping platform because they still need more information.
+* Find behaviors that suggest strong purchase intent even when users do not explicitly state that intent.
+* Find cases where users appear to lose decision context after wishlisting a product.
+* What problems are users describing without directly asking for a feature?
+* What implicit unmet needs appear repeatedly across high-intent conversations?
+
+The system should distinguish between four levels:
+
+### User Evidence
+
+What the user actually said.
+
+### Observed Behavior
+
+A behavior that can reasonably be inferred from the evidence.
+
+### Possible Unmet Need
+
+A hypothesis derived from repeated evidence.
+
+### Potential Solution
+
+A feature or intervention that could address the unmet need.
+
+The system must not automatically treat a potential solution as the discovered user problem.
+
+Example:
+
+```text
+User Evidence:
+"I had so many things saved that I forgot which ones I actually wanted."
+
+Observed Behavior:
+The user accumulated many saved products and lost track of their original purchase consideration.
+
+Possible Unmet Need:
+The user may need help maintaining context or prioritizing previously saved products.
+
+Incorrect Conclusion:
+"Users need wishlist reminders."
+
+A reminder is only one possible solution and should not be treated as the discovered problem.
+```
+
+---
+
+# Data Sources
+
+The system should support publicly available conversations related to Myntra and online fashion shopping.
+
+Potential sources include:
+
+* Myntra Google Play Store reviews
+* Myntra Apple App Store reviews
+* Reddit discussions
+* YouTube comments
+* Reddit discussions
+* product Q&A
+* publicly accessible social media conversations
+* other legally accessible public conversations related to online fashion shopping
+
+The system should distinguish between two evidence types.
+
+## Myntra-Specific Evidence
+
+Conversations directly involving Myntra.
+
+Examples:
+
+* Myntra app reviews
+* Myntra-related Reddit discussions
+* comments on Myntra haul or review videos
+* Myntra shopping experience conversations
+
+## Category-Level Evidence
+
+Conversations about online fashion-shopping behavior even when Myntra is not explicitly mentioned.
+
+Examples:
+
+* online sizing uncertainty
+* fashion product comparison
+* clothing quality concerns
+* styling uncertainty
+* occasion shopping
+* review-seeking behavior
+* product shortlisting
+* external product research
+* wishlist usage
+
+The dataset should preserve this distinction so Myntra-specific evidence can be compared with broader online-shopping behavior.
+
+---
+
+# Review Time Window
+
+For Myntra Google Play Store and Apple App Store reviews, the system should import and analyze reviews from the **most recent 12 weeks**.
+
+The ingestion pipeline should:
+
+* fetch or import reviews from the latest 12-week period
+* preserve the original review publication date
+* exclude reviews older than the configured analysis window
+* record the start and end date of the analyzed period
+* show the analyzed date range in the Discovery Pulse Dashboard
+
+The 12-week review window should be configurable so it can be changed later if required.
+
+For sources such as Reddit, YouTube, and other public conversations, the appropriate time window may be determined based on source availability and the amount of useful behavioral evidence available.
+
+The system should preserve publication dates wherever available so findings can be filtered and interpreted by time period.
+
+---
+
+# Raw Data Requirements
+
+Each collected conversation should be stored as a raw record.
+
+Where available, store:
+
+```json
+{
+  "raw_record_id": "unique_id",
+  "source": "play_store | app_store | reddit | youtube | product_review | community | other",
+  "source_type": "review | post | comment | qna | discussion",
+  "source_url": "public_url_if_available",
+  "published_at": "date_if_available",
+  "collected_at": "collection_timestamp",
+  "title": "title_if_available",
+  "raw_text": "original_text",
+  "rating": "rating_if_available",
+  "product_context": "myntra | online_fashion_general | competitor | unknown"
+}
+```
+
+Original text should be preserved internally so AI-generated observations can be audited.
+
+---
+
+# Data Cleaning
+
+Before AI analysis, collected data should pass through a cleaning layer.
+
+The system should:
+
+* remove exact duplicates
+* identify near-duplicate content
+* remove empty records
+* remove extremely low-information content where appropriate
+* remove spam
+* remove advertisements and promotional content
+* normalize whitespace and text formatting
+* remove personally identifiable information
+* preserve cleaned and original versions separately where necessary
+
+Cleaning rules should not remove useful behavioral evidence simply because a review is short, negative, informal, or grammatically incorrect.
+
+---
+
+# Relevance Classification
+
+Not every conversation about Myntra or fashion shopping will provide useful evidence.
+
+Each conversation should be classified as:
+
+```text
+highly_relevant
+somewhat_relevant
+not_relevant
+```
+
+Relevant conversations may contain evidence about:
+
+* wishlist behavior
+* product shortlisting
+* purchase hesitation
+* product comparison
+* fit or sizing
+* product quality
+* styling
+* occasion suitability
+* review usage
+* trust
+* social validation
+* price or timing
+* availability
+* delivery concerns affecting a decision
+* returns or exchanges affecting a decision
+* external research
+* decision postponement
+* purchase abandonment
+
+Examples of records that may be irrelevant include:
+
+* app crashes with no shopping-decision context
+* login problems
+* generic customer-service complaints
+* generic positive reviews
+* payment failures unrelated to product decision-making
+* delivery complaints that reveal no relevant decision behavior
+
+Relevance should be determined by usefulness for the research objective, not by sentiment.
+
+---
+
+# Unit of Analysis
+
+The primary unit of analysis should be:
+
+**An evidence-backed behavioral observation extracted from a public user conversation.**
+
+A single conversation may produce multiple useful observations.
+
+Example:
+
+```text
+"I saved three dresses but still haven't ordered because I'm unsure
+about sizing. I searched YouTube for haul videos to see how they look
+on real people."
+```
+
+Possible observations:
+
+```text
+Wishlist behavior → Comparison shortlist
+
+Purchase barrier → Fit/size uncertainty
+
+Information need → Real-life fit information
+
+Workaround → YouTube haul videos
+
+External behavior → Research outside the shopping platform
+
+Decision outcome → Purchase postponed
+```
+
+The system should therefore extract behaviors and needs rather than assigning only one topic to every review.
+
+---
+
+# Structured Research Observation
+
+Relevant conversations should be transformed into structured observations.
+
+Each observation should include:
+
+```json
+{
+  "observation_id": "unique_id",
+  "source_record_id": "raw_record_id",
+
+  "source": "play_store | app_store | reddit | youtube | product_review | community | other",
+
+  "source_url": "public_source_url_if_available",
+
+  "is_myntra_specific": true,
+
+  "journey_stage": "browse | wishlist_add | wishlist_revisit | comparison | cart | checkout | post_purchase | unknown",
+
+  "wishlist_intent": "genuine_purchase | price_tracking | comparison | inspiration | bookmarking | aspirational | occasion_planning | unknown",
+
+  "purchase_intent": "high | medium | low | unknown",
+
+  "product_category": "category_if_observable",
+
+  "theme": "recurring_theme_if_observable",
+
+  "primary_barrier": "barrier_category",
+
+  "secondary_barriers": [],
+
+  "root_cause": "underlying_reason_if_observable",
+
+  "uncertainty": "what_the_user_is_unsure_about",
+
+  "information_needed": "information_the_user_is_seeking",
+
+  "workaround": "current_user_workaround",
+
+  "external_platform_used": "youtube | instagram | google | reddit | friends_family | offline_store | competitor | none | unknown",
+
+  "alternative_considered": "true | false | unknown",
+
+  "occasion": "occasion_if_observable",
+
+  "decision_outcome": "purchased | postponed | abandoned | still_considering | returned | unknown",
+
+  "segment_signal": "segment_if_observable",
+
+  "evidence_quote": "verbatim_supporting_text",
+
+  "ai_confidence": 0.0
+}
+```
+
+The final schema should be reviewed and refined after inspecting real collected data.
+
+---
+
+# Initial Wishlist Intent Taxonomy
+
+The system may begin with:
+
+* genuine purchase intent
+* price tracking
+* comparison shortlist
+* inspiration
+* bookmarking
+* aspirational saving
+* occasion planning
+* unknown
+
+These categories are not exhaustive.
+
+If repeated behaviors emerge that do not fit the taxonomy, additional categories should be allowed.
+
+---
+
+# Initial Purchase Barrier Taxonomy
+
+The system may begin with:
+
+* fit or size uncertainty
+* quality uncertainty
+* price or timing uncertainty
+* comparison difficulty
+* styling uncertainty
+* occasion suitability
+* review trust gap
+* social validation
+* availability
+* delivery concern
+* return or exchange concern
+* product or platform trust
+* other
+* unknown
+
+These categories should be treated as an initial research framework, not predetermined conclusions.
+
+---
+
+# Initial Behavioral Segment Signals
+
+Possible behavioral segment signals include:
+
+* high-intent deliberator
+* fit-anxious shopper
+* comparison shopper
+* occasion shopper
+* price watcher
+* research-heavy shopper
+* casual bookmarker
+* quality-conscious shopper
+* unknown
+
+Segments should only be assigned when supported by evidence.
+
+The system should not infer unsupported demographic characteristics.
+
+---
+
+# External Research Behavior
+
+The engine should identify where users go when the shopping platform does not provide enough information.
+
+Examples include:
+
+* YouTube reviews
+* YouTube haul videos
+* Google search
+* Reddit
+* Reddit
+* Instagram
+* influencers or creators
+* friends and family
+* offline stores
+* competitor shopping platforms
+* brand websites
+* Brand websites
+
+The purpose is to understand what information users still need after discovering a product they like.
+
+---
+
+# Theme Grouping
+
+Relevant behavioral observations should be grouped into recurring themes so that Product Managers can quickly understand the major patterns appearing across the analyzed evidence.
+
+Possible themes may include:
+
+* fit and sizing uncertainty
+* product quality uncertainty
+* comparison difficulty
+* price or purchase-timing hesitation
+* styling uncertainty
+* occasion suitability
+* review trust gap
+* social validation
+* availability concerns
+* delivery, return, or exchange concerns
+
+These are only starting examples.
+
+Themes should be derived from the analyzed data and should be allowed to evolve when new patterns emerge.
+
+The system should support both:
+
+1. classification into existing research themes
+2. discovery of new themes that do not fit the existing taxonomy
+
+For each theme, the Discovery Pulse Dashboard should show where possible:
+
+* number of supporting observations
+* percentage of relevant observations
+* common root causes
+* associated wishlist intents
+* associated purchase intent
+* affected behavioral segments
+* recurring uncertainties
+* recurring information needs
+* common workarounds
+* external research behaviors
+* representative user quotes
+* source distribution
+* AI confidence or evidence quality
+
+Users should be able to open a theme and inspect the underlying supporting evidence.
+
+---
+
+# Theme and Root-Cause Discovery
+
+Theme analysis should go beyond keyword counting.
+
+The engine should attempt to understand:
+
+```text
+What happened?
+        ↓
+What prevented progress?
+        ↓
+Why did that barrier exist?
+        ↓
+What information was missing?
+        ↓
+What did the user do instead?
+```
+
+The system should support:
+
+1. predefined classification for known research dimensions
+2. emergent discovery for patterns not represented in the initial taxonomy
+
+The system should not force every observation into a predefined category.
+
+---
+
+# Themes vs Opportunity Areas
+
+A **theme** represents a recurring pattern found across user conversations.
+
+An **opportunity area** represents a recurring unresolved user problem or unmet need that may be worth investigating further.
+
+Themes should therefore not automatically be treated as opportunity areas.
+
+Example:
+
+```text
+Theme:
+Fit and sizing
+
+Observed Pattern:
+Users repeatedly hesitate because they are uncertain which size will fit.
+
+Root Cause:
+Available sizing information does not provide enough confidence for the user's specific situation.
+
+Possible Opportunity Area:
+Users with purchase intent need greater confidence about how a shortlisted product is likely to fit before deciding whether to purchase it.
+```
+
+The system should use evidence, root causes, purchase intent, recurrence, uncertainties, and user workarounds to help move from themes to potential opportunity areas.
+
+---
+
+# Opportunity Areas
+
+The Discovery Engine should convert recurring unresolved problems into potential opportunity areas.
+
+An opportunity area should represent a **user problem or unmet need**, not a product solution.
+
+Example:
+
+```text
+Incorrect:
+Build an AI size recommendation feature.
+
+Correct:
+Users with purchase intent remain uncertain about which size will fit because available sizing information does not provide enough confidence.
+```
+
+The engine should avoid prematurely recommending features.
+
+---
+
+# Opportunity Quantification
+
+Where the available evidence supports it, the system should quantify opportunity areas.
+
+For each opportunity area, calculate:
+
+* supporting observation count
+* percentage of relevant observations
+* source distribution
+* Myntra-specific vs category-level distribution
+* associated wishlist intent
+* associated purchase intent
+* associated behavioral segments
+* recurring root causes
+* recurring uncertainties
+* recurring information needs
+* recurring workarounds
+* external research behavior
+* evidence confidence
+
+Quantification must refer only to the analyzed dataset.
+
+Correct:
+
+```text
+"23% of relevant observations in the analyzed dataset mention fit uncertainty."
+```
+
+Incorrect:
+
+```text
+"23% of Myntra users experience fit uncertainty."
+```
+
+The public dataset is a discovery sample and should not be represented as statistically representative of Myntra’s entire user population.
+
+---
+
+# Grounded Retrieval
+
+The Query Interface should use the analyzed evidence corpus rather than relying only on semantic search across raw reviews.
+
+Preferred flow:
+
+```text
+User Question
+      ↓
+Understand Research Intent
+      ↓
+Apply Structured Filters When Relevant
+      ↓
+Retrieve Relevant Observations
+      ↓
+Retrieve Supporting Source Evidence
+      ↓
+Generate Grounded Synthesis
+      ↓
+Answer + Evidence + Caveats
+```
+
+Possible structured filters include:
+
+* wishlist intent
+* purchase intent
+* purchase barrier
+* theme
+* behavioral segment
+* source
+* product category
+* journey stage
+* Myntra-specific vs category-level evidence
+
+Semantic retrieval may then operate within the relevant subset.
+
+---
+
+# Evidence Requirements
+
+All major findings should be traceable to supporting evidence.
+
+The system should preserve:
+
+* source record
+* supporting quote
+* source type
+* source URL where available
+* extracted observation
+* confidence level
+
+The Discovery Pulse, Evidence Explorer, and Query Interface should allow users to inspect evidence behind important findings.
+
+The system must never fabricate quotes.
+
+---
+
+# Privacy
+
+The system should not intentionally collect or display personally identifiable information.
+
+Do not retain:
+
+* names
+* usernames or handles
+* email addresses
+* phone numbers
+* addresses
+* order IDs
+* payment information
+* device identifiers
+* other personal identifiers
+
+If identifiable information appears inside public text, it should be removed or masked before being surfaced in the product.
+
+---
+
+# Data Constraints
+
+Use only legally accessible public conversations or permitted public exports.
+
+Do not use:
+
+* private Myntra data
+* login-protected user data
+* private communities
+* data obtained by bypassing access controls
+* scraping methods that violate source restrictions
+* fabricated reviews
+* synthetic quotes presented as real evidence
+
+Synthetic data may be used for engineering tests but must never be mixed with real research findings.
+
+---
+
+# AI Reliability Requirements
+
+The AI system must:
+
+* preserve source evidence
+* use structured outputs where appropriate
+* allow uncertain values
+* avoid inventing motivations
+* avoid inventing outcomes
+* avoid fabricating quotes
+* avoid inventing counts or percentages
+* distinguish evidence from interpretation
+* store confidence information
+* allow inspection of extracted observations
+
+If information cannot be inferred reliably, use values such as:
+
+```text
+unknown
+not_observable
+insufficient_evidence
+```
+
+It is preferable to leave information unknown rather than fabricate an interpretation.
+
+---
+
+# Non-Goals
+
+The system is not intended to:
+
+* build the final wishlist product solution
+* automatically modify Myntra
+* perform only sentiment analysis
+* produce only a generic review summary
+* optimize App Store or Play Store ratings
+* treat every wishlist addition as genuine purchase intent
+* infer unsupported demographic characteristics
+* make claims about all Myntra users from a public conversation sample
+* generate fake user evidence
+* generate fake statistics
+* treat feature requests as equivalent to user problems
+* replace primary user research
+
+Price-related hesitation may still be analyzed as a user behavior, but the engine should focus on discovering the underlying problem rather than automatically recommending discounts, coupons, cashback, or other monetary incentives.
+
+---
+
+# Expected Deliverables
+
+## 1. Discovery Pulse Dashboard
+
+A usable dashboard that allows a Product Manager to:
+
+* understand the analyzed dataset
+* inspect recurring themes
+* inspect wishlist motivations
+* inspect recurring purchase barriers
+* understand user uncertainties
+* understand information needs
+* understand workarounds
+* compare behavioral segments
+* explore potential opportunity areas
+* inspect supporting evidence
+
+---
+
+## 2. Grounded Query Interface
+
+A natural-language interface that allows Product Managers to investigate the analyzed evidence.
+
+Responses should be grounded in retrieved observations and supporting source evidence.
+
+---
+
+## 3. Evidence Explorer
+
+A way to inspect the evidence supporting important findings.
+
+It should display fields such as:
+
+* source
+* supporting quote
+* wishlist intent
+* purchase barrier
+* theme
+* root cause
+* uncertainty
+* information needed
+* workaround
+* behavioral segment
+* source link where available
+
+---
+
+## 4. Structured Research Outputs
+
+The pipeline should generate reviewable outputs containing:
+
+* raw conversations
+* cleaned conversations
+* relevance classification
+* extracted observations
+* themes
+* barriers
+* wishlist intents
+* uncertainties
+* information needs
+* workarounds
+* behavioral segments
+* evidence references
+* AI confidence
+
+Intermediate outputs should be stored in reviewable files where useful so the data and AI transformations can be manually inspected.
+
+---
+
+# Success Criteria
+
+The system will be considered successful if it can:
+
+* analyze meaningful volumes of public user conversations
+* import the most recent 12 weeks of Myntra App Store and Play Store reviews
+* filter irrelevant feedback
+* group relevant observations into useful recurring themes
+* identify different wishlist motivations
+* distinguish stronger purchase intent from casual saving where evidence permits
+* identify recurring purchase barriers
+* identify unresolved user uncertainties
+* identify current user workarounds
+* identify external research behavior
+* compare patterns across behavioral segments
+* discover implicit unmet needs
+* identify problems users describe even when they do not request a feature
+* distinguish themes from potential opportunity areas
+* quantify recurring patterns within the analyzed dataset where possible
+* preserve traceable supporting evidence
+* surface useful insights through the Discovery Pulse
+* answer evidence-backed research questions through the Query Interface
+* avoid fabricated evidence and unsupported claims
+
+---
+
+# Definition of Done
+
+The system is complete when:
+
+1. Public user conversations can be collected or imported.
+2. Myntra App Store and Play Store reviews from the most recent 12 weeks are available for analysis.
+3. Raw data is stored in a consistent format.
+4. Data is cleaned and normalized.
+5. Duplicate and privacy-risk records are handled.
+6. Relevant conversations are identified.
+7. Structured behavioral observations are extracted.
+8. Initial research taxonomies can be reviewed and refined.
+9. Recurring themes can be identified and grouped.
+10. Root causes and unmet needs can be explored.
+11. Implicit unmet needs can be investigated through natural-language queries.
+12. Themes can be distinguished from opportunity areas.
+13. Opportunity areas can be generated from recurring unresolved needs.
+14. Patterns can be quantified within the analyzed dataset.
+15. Supporting evidence can be inspected.
+16. A Discovery Pulse Dashboard presents the main findings.
+17. An Evidence Explorer provides traceability to user evidence.
+18. A Grounded Query Interface answers evidence-backed research questions.
+19. Intermediate and final outputs can be manually reviewed.
+20. The system clearly communicates uncertainty, evidence quality, and dataset limitations.
+
+---
+
+# Summary
+
+The goal is to build an **AI-powered product discovery system** that converts public Myntra and online fashion-shopping conversations into structured, evidence-backed research insights.
+
+The final product should combine:
+
+**Discovery Pulse Dashboard + Evidence Explorer + Grounded Query Interface**
+
+The system should help move from:
+
+```text
+Thousands of Unstructured User Conversations
+                ↓
+Relevant Behavioral Evidence
+                ↓
+Recurring Themes
+                ↓
+Wishlist Motivations
+                ↓
+Purchase Barriers
+                ↓
+Unresolved Uncertainties
+                ↓
+Information Needs
+                ↓
+Current Workarounds
+                ↓
+Behavioral Patterns
+                ↓
+Implicit Unmet Needs
+                ↓
+Potential Opportunity Areas
+```
+
+The value of the system is not simply summarizing what users say.
+
+Its value is helping Product Managers understand:
+
+**what users are doing, why they are hesitating, what information they are missing, how they currently solve the problem themselves, and which recurring unmet needs deserve deeper investigation.**

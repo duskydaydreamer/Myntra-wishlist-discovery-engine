@@ -1,0 +1,48 @@
+wishlist_intents:
+  - genuine_purchase
+  - price_tracking
+  - comparison
+  - inspiration
+  - bookmarking
+  - aspirational
+  - occasion_planning
+  - unknown
+
+purchase_barriers:
+  - fit_size_uncertainty
+  - quality_uncertainty
+  - price_timing
+  - comparison_difficulty
+  - styling_uncertainty
+  - occasion_suitability
+  - review_trust_gap
+  - social_validation
+  - availability
+  - delivery_concern
+  - return_exchange_concern
+  - platform_trust
+  - other
+  - unknown
+
+segment_signals:
+  - high_intent_deliberator
+  - fit_anxious
+  - comparison_shopper
+  - occasion_shopper
+  - price_watcher
+  - research_heavy
+  - casual_bookmarker
+  - quality_conscious
+  - unknown
+
+predefined_themes:
+  - fit_and_sizing_uncertainty
+  - product_quality_uncertainty
+  - comparison_difficulty
+  - price_timing_hesitation
+  - styling_uncertainty
+  - occasion_suitability
+  - review_trust_gap
+  - social_validation
+  - availability_concerns
+  - delivery_return_exchange_concerns

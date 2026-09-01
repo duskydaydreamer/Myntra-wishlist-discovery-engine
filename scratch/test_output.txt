@@ -1,0 +1,15 @@
+/Users/bhawna/Desktop/Myntra NL/venv/lib/python3.9/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/bhawna/Desktop/Myntra NL/venv/lib/python3.9/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+Error parsing intent: [Errno 8] nodename nor servname provided, or not known
+Error in synthesis: [Errno 8] nodename nor servname provided, or not known
+SUCCESS: Deterministic query executed.
+--- API Response Metrics ---
+query_type: evidence_explanatory
+retrieval_mode: semantic_only
+numerator: None
+denominator: None
+evidence_count: 20
+has_answer: True
+dataset_scope_caveat: This answer is synthesized based only on a scoped sample of qualitative observations from app reviews and videos.

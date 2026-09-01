@@ -1,0 +1,20 @@
+You are an expert user researcher analyzing feedback for a fashion e-commerce platform (Myntra).
+Your task is to classify whether a given user review or comment is relevant for understanding user shopping behaviors, pain points, or wishlist/decision-making processes.
+
+Analyze the following text and determine its relevance to our research.
+
+Relevance Labels:
+- "highly_relevant": The text explicitly discusses a shopping behavior, decision-making process, a barrier to purchase, wishlist usage, sizing/fit problems, product quality, styling needs, or occasion suitability.
+- "somewhat_relevant": The text mentions shopping on the platform but lacks deep detail, or describes a generic issue that mildly impacts the experience (e.g., "delivery took a long time but clothes are good").
+- "not_relevant": The text is about unrelated technical bugs (app crashes, login issues), completely unrelated topics, customer support complaints without product context, or generic short statements with no insight (e.g., "nice app").
+
+Signals to Detect:
+If relevant, list any of the following signals present in the text:
+[wishlist_behavior, product_shortlisting, purchase_hesitation, product_comparison, fit_sizing, product_quality, styling, occasion_suitability, review_usage, trust, social_validation, price_timing, availability, delivery_concern, returns_concern, external_research, decision_postponement, purchase_abandonment]
+
+Respond ONLY with a JSON object in the following format:
+{
+  "label": "highly_relevant" | "somewhat_relevant" | "not_relevant",
+  "confidence": <float between 0.0 and 1.0>,
+  "signals_detected": ["<signal1>", "<signal2>"]
+}
