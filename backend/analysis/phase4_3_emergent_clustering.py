@@ -30,7 +30,7 @@ from sklearn.preprocessing import normalize
 # ── paths ──────────────────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DB_PATH = os.path.join(BASE_DIR, "data", "discovery_pulse.db")
-CHROMA_PATH = os.path.join(BASE_DIR, "data", "chroma")
+CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(BASE_DIR, "data", "chroma"))
 OUTPUT_DIR = os.path.join(BASE_DIR, "data", "phase4")
 CLUSTERS_PATH = os.path.join(OUTPUT_DIR, "semantic_clusters.jsonl")
 MEMBERSHIPS_PATH = os.path.join(OUTPUT_DIR, "cluster_memberships.jsonl")

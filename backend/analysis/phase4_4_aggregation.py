@@ -25,7 +25,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DB_PATH = os.path.join(BASE_DIR, "data", "discovery_pulse.db")
-CHROMA_PATH = os.path.join(BASE_DIR, "data", "chroma")
+CHROMA_PATH = os.environ.get("CHROMA_PATH", os.path.join(BASE_DIR, "data", "chroma"))
 OUTPUT_DIR = os.path.join(BASE_DIR, "data", "phase4")
 REP_PATH = os.path.join(OUTPUT_DIR, "cluster_representatives.jsonl")
 

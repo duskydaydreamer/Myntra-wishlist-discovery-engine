@@ -23,7 +23,7 @@ from backend.classification.relevance_classifier import RelevanceClassifier
 async def run_cleaning(config):
     run_id = f"clean_run_{uuid.uuid4().hex[:8]}"
     
-    db_url = config.get("storage", {}).get("db_url", "sqlite:///data/discovery_pulse.db")
+    db_url = os.environ.get("DATABASE_URL", config.get("storage", {}).get("db_url", "sqlite:///data/discovery_pulse.db"))
     if db_url.startswith("sqlite:///") and not db_url.startswith("sqlite+aiosqlite:///"):
         db_url = db_url.replace("sqlite:///", "sqlite+aiosqlite:///")
         

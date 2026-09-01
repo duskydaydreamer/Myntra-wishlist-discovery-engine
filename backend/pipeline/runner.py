@@ -3,6 +3,7 @@ import asyncio
 import uuid
 import yaml
 from pathlib import Path
+import os
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
@@ -16,7 +17,7 @@ from backend.ingestion.run_tracker import RunTracker
 async def run_ingestion(sources, config):
     run_id = f"run_{uuid.uuid4().hex[:8]}"
     
-    db_url = config.get("storage", {}).get("db_url", "sqlite:///data/discovery_pulse.db")
+    db_url = os.environ.get("DATABASE_URL", config.get("storage", {}).get("db_url", "sqlite:///data/discovery_pulse.db"))
     # For async sqlalchemy with sqlite, URL needs to be sqlite+aiosqlite
     if db_url.startswith("sqlite:///") and not db_url.startswith("sqlite+aiosqlite:///"):
         db_url = db_url.replace("sqlite:///", "sqlite+aiosqlite:///")

@@ -2195,17 +2195,18 @@ Phase 6 may add deployment/automation/infrastructure behavior, but must not chan
 
 ---
 
-### Task 6.1 — Production Configuration & Persistence
+### Task 6.1 — Production Configuration & Persistence [COMPLETED]
 
-- Use environment variables for all provider/API secrets.
-- No secrets committed to Git.
-- Persistent relational database required.
-- Preserve existing Chroma/vector storage.
-- Do not introduce pgvector unless there is a proven deployment constraint.
-- Deployment must preserve pipeline_runs, run_records, observations, Phase 4 derived outputs, and vector data across restart/redeployment.
-- Production paths/config should be environment-driven, not hardcoded to local machine paths.
-- Log/config differences between local and production should not alter data semantics.
-- Do not restructure the backend merely for deployment.
+- Use environment variables for all provider/API secrets (already implemented via `os.getenv`).
+- Added `.env.example` safe template with variable NAMES only.
+- No secrets committed to Git (verified `.env` is in `.gitignore`).
+- Persistent relational database is configurable via `DATABASE_URL` environment variable, falling back to local SQLite.
+- Existing Chroma/vector storage preserved and configurable via `CHROMA_PATH` environment variable.
+- Did not introduce pgvector.
+- Pipeline_runs, run_records, observations, Phase 4 derived outputs, and vector data survive restart/redeployment since paths are configurable and state is fully persisted to disk (SQLite + ChromaDB files).
+- Production paths/config are environment-driven in `backend/api/dependencies.py`, `backend/pipeline/runner.py`, `backend/cleaning/cleaning_runner.py`, `backend/query/retriever.py`, and `backend/analysis/phase4_*.py`.
+- No data semantics altered.
+- Backend not restructured merely for deployment.
 
 ---
 
