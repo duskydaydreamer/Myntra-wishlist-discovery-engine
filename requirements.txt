@@ -15,6 +15,12 @@ app-store-scraper
 praw
 google-api-python-client
 
+# Dependency compatibility pins
+# app-store-scraper and google-play-scraper depend on urllib3.packages.six
+# which was removed in urllib3>=2.0. Pin to 1.x to maintain compatibility.
+urllib3>=1.26.0,<2
+requests>=2.28.0,<3
+
 # AI / ML
 google-generativeai
 sentence-transformers
