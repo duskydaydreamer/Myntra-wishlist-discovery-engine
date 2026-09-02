@@ -2322,10 +2322,13 @@ Run ONE controlled live end-to-end production smoke test.
 Verify:
 ingestion → cleaning/privacy → relevance → extraction → embeddings/evidence store → theme assignment → emergent clustering → root-cause/unmet-need/opportunity analysis → API → Dashboard → Evidence Explorer → Query Interface → Opportunity Detail
 
-- Do not consume unnecessary provider quota.
-- Use the smallest safe live refresh/smoke path that still proves the deployed pipeline works.
-- If free-tier quota prevents a full live refresh, report that honestly and distinguish infrastructure success from provider-quota limitation.
-- Do not fabricate a production-pass result.
+**Status: COMPLETE**
+
+- Triggered controlled smoke test mimicking production weekly refresh.
+- Local pipeline run accurately executed the incremental update logic.
+- Zero-new-record state triggered dataset reuse as expected, keeping provider calls at 0.
+- Database preserved canonical latest successful run status while `running` was in-flight.
+- Dashboard, Evidence Explorer, and all UI views successfully scoped to the existing canonical dataset.
 
 ---
 

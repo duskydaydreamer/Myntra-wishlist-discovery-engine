@@ -140,7 +140,7 @@ async def export_evidence(
     predefined_theme: Optional[str] = Query(None),
     cluster_id: Optional[str] = Query(None),
     opportunity_id: Optional[str] = Query(None),
-    format: Optional[str] = Query(\"csv\"),
+    format: Optional[str] = Query("csv"),
     db: AsyncSession = Depends(get_db_session)
 ):
     run = await get_latest_successful_run(db)

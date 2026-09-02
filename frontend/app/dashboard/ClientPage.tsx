@@ -95,9 +95,26 @@ export default function DashboardClient() {
           <h1 className="page-title">Discovery Pulse</h1>
           <p className="page-description">A focused view of public shopping feedback, purchase barriers, and areas that need a closer look.</p>
         </div>
-        <div className="analysis-meta surface-muted shrink-0">
-          <span className="analysis-meta__label">Current analysis</span>
-          <span className="analysis-meta__date">{new Date(data.stats.analysis_run_metadata.timestamp).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+        <div className="analysis-meta surface-muted shrink-0 flex flex-col gap-1 text-[11px] leading-tight mt-2">
+          <div className="flex justify-between gap-4">
+            <span className="font-semibold text-[var(--muted)]">Last successful refresh:</span>
+            <span>{new Date(data.stats.analysis_run_metadata.timestamp).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="font-semibold text-[var(--muted)]">Active analysis window:</span>
+            <span>{data.stats.date_range.start} to {data.stats.date_range.end}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="font-semibold text-[var(--muted)]">Included sources:</span>
+            <span>{Object.keys(data.stats.source_distribution_analyzed).map(s => s.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())).join(', ') || 'None'}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="font-semibold text-[var(--muted)]">Analyzed dataset count:</span>
+            <span>{data.stats.canonical_observations.toLocaleString()} observations</span>
+          </div>
+          <div className="mt-2 text-[10px] text-[var(--muted)] italic max-w-[300px]">
+            Findings reflect the analyzed public dataset and should not be generalized to all Myntra users.
+          </div>
         </div>
       </header>
 
