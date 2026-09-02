@@ -116,7 +116,7 @@ def run_llm_synthesis(run_id="run_latest"):
     print("PHASE 4 TASK 4.5 — LLM Naming & Root-Cause Synthesis")
     print("=" * 60)
     
-        conn = init_db()
+    conn = init_db()
     
     print("Loading representative quotes...")
     clusters = load_representatives()

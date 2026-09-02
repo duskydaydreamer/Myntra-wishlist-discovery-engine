@@ -241,7 +241,7 @@ def run_predefined_mapping(run_id="run_latest"):
     print("PHASE 4 TASK 4.2 — Predefined Semantic Theme Mapping")
     print("=" * 60)
     
-        threshold_version = "v1_cosine_0.45"
+    threshold_version = "v1_cosine_0.45"
     
     # 1. Init DB
     conn = init_db()

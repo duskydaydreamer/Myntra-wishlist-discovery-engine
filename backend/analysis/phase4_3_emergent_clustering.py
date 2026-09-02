@@ -101,7 +101,7 @@ def run_emergent_clustering(run_id="run_latest"):
     print("PHASE 4 TASK 4.3 — Emergent Semantic Pattern Discovery")
     print("=" * 60)
     
-        now_iso = datetime.now(timezone.utc).isoformat()
+    now_iso = datetime.now(timezone.utc).isoformat()
     
     # 1. DB setup
     conn = init_db()

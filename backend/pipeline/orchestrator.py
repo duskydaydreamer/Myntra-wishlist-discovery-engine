@@ -9,7 +9,7 @@ from backend.store.database import PipelineRun
 # Phase 1
 from backend.pipeline.runner import run_ingestion as phase1_ingestion
 from backend.pipeline.runner import load_config
-from backend.cleaning.cleaning_runner import run_pipeline as run_cleaning
+from backend.cleaning.cleaning_runner import run_cleaning
 
 # Phase 2
 from scripts.phase2b_scaling_optimized import run_classification

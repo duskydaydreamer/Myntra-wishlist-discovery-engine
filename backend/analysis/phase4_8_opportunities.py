@@ -85,7 +85,7 @@ def run_opportunities(run_id="run_latest"):
     print("PHASE 4 TASK 4.8 — Opportunity Area Generation")
     print("=" * 60)
     
-        conn = init_db()
+    conn = init_db()
     
     needs = load_unmet_needs()
     print(f"Loaded {len(needs)} unmet needs context.")

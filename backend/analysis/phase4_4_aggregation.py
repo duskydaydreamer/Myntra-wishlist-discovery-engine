@@ -186,7 +186,7 @@ def run_aggregation(run_id="run_latest"):
     print("PHASE 4 TASK 4.4 — Theme/Cluster Aggregation")
     print("=" * 60)
     
-        conn = init_db()
+    conn = init_db()
     
     print("Loading observations and memberships...")
     obs_data = get_observation_data()
