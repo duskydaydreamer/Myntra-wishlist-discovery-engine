@@ -223,7 +223,7 @@ async def get_stats(db: AsyncSession = Depends(get_db_session)):
     run = await get_latest_successful_run(db)
         
     # Calculate every displayed count from the current database snapshot.
-    source_dist_query = select(Observation.source, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).group_by(Observation.source)
+    source_dist_query = select(Observation.source, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).group_by(Observation.source)
     dist_result = await db.execute(source_dist_query)
     source_dist_analyzed = {row[0]: row[1] for row in dist_result.all() if row[0]}
 
@@ -453,7 +453,7 @@ async def get_barriers(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -498,7 +498,7 @@ async def get_wishlist_motivations(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -543,7 +543,7 @@ async def get_purchase_intents(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -588,7 +588,7 @@ async def get_journey_stages(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -633,7 +633,7 @@ async def get_decision_outcomes(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -683,7 +683,7 @@ async def get_uncertainties(
     result = await db.execute(query)
     items, classified_count = _aggregate_free_text(result.all(), _normalize_uncertainty)
     
-    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
     if db_filters:
         total_query = total_query.where(*db_filters)
     total_count = (await db.execute(total_query)).scalar() or 0
@@ -728,7 +728,7 @@ async def get_information_needs(
     result = await db.execute(query)
     items = _aggregate_information_needs(result.all())
     
-    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
     if db_filters: denom_query = denom_query.where(*db_filters)
     denom_result = await db.execute(denom_query)
     denominator = denom_result.scalar() or 0
@@ -776,7 +776,7 @@ async def get_workarounds(
     result = await db.execute(query)
     items, classified_count = _aggregate_free_text(result.all(), _normalize_workaround)
     
-    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
     if db_filters:
         total_query = total_query.where(*db_filters)
     total_count = (await db.execute(total_query)).scalar() or 0
@@ -818,7 +818,7 @@ async def get_segments(
     result = await db.execute(query)
     items = [{"name": row[0], "count": row[1]} for row in result.all()]
     
-    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
     if db_filters: denom_query = denom_query.where(*db_filters)
     denom_result = await db.execute(denom_query)
     denominator = denom_result.scalar() or 0
