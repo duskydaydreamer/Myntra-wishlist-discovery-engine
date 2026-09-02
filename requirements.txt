@@ -24,9 +24,9 @@ sentence-transformers
 chromadb
 
 # PII detection
-# presidio-analyzer
-# presidio-anonymizer
-# spacy
+presidio-analyzer
+presidio-anonymizer
+spacy
 
 # Utilities
 pyyaml
