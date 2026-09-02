@@ -6,11 +6,8 @@ import os
 import uuid
 import datetime
 from datetime import timezone
-from pydantic import BaseModel
-from typing import Optional
-
-from backend.api.dependencies import get_db_session
-from backend.store.database import PipelineRun, SessionLocal
+from backend.api.dependencies import get_db_session, async_session
+from backend.store.database import PipelineRun
 from backend.pipeline.orchestrator import run_canonical_pipeline
 
 router = APIRouter()
@@ -69,17 +66,18 @@ async def trigger_pipeline_refresh(
     return {"message": "Pipeline refresh started", "run_id": new_run.run_id, "status": "running"}
 
 async def run_pipeline_task(run_id: str):
-    # Obtain a separate session for the background task
-    db = SessionLocal()
-    try:
-        await run_canonical_pipeline(db, run_id)
-    except Exception as e:
-        run_record = db.query(PipelineRun).filter(PipelineRun.run_id == run_id).first()
-        if run_record:
-            run_record.status = "failed"
-            if run_record.errors is None:
-                run_record.errors = []
-            run_record.errors.append({"error": str(e), "timestamp": datetime.datetime.utcnow().isoformat()})
-            db.commit()
-    finally:
-        db.close()
+    async with async_session() as db:
+        try:
+            await run_canonical_pipeline(db, run_id)
+        except Exception as e:
+            import json
+            result = await db.execute(select(PipelineRun).where(PipelineRun.run_id == run_id))
+            run_record = result.scalars().first()
+            if run_record:
+                run_record.status = "failed"
+                current_errors = run_record.errors or []
+                if isinstance(current_errors, str):
+                    current_errors = json.loads(current_errors)
+                current_errors.append(f"Error: {str(e)} at {datetime.datetime.utcnow().isoformat()}")
+                run_record.errors = json.dumps(current_errors)
+                await db.commit()
