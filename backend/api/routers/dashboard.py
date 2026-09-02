@@ -289,6 +289,7 @@ async def get_stats(db: AsyncSession = Depends(get_db_session)):
 @router.get("/themes", response_model=List[ThemeStat])
 async def get_themes(db: AsyncSession = Depends(get_db_session)):
     from backend.store.database import PredefinedTheme, ThemeAssignment
+    run = await get_latest_successful_run(db)
     
     # Query predefined_themes + count from theme_assignments
     query = (
@@ -334,6 +335,7 @@ async def get_clusters(db: AsyncSession = Depends(get_db_session)):
 
 @router.get("/opportunities", response_model=List[OpportunityStat])
 async def get_opportunities(db: AsyncSession = Depends(get_db_session)):
+    run = await get_latest_successful_run(db)
     query = select(Phase4OpportunityArea).order_by(Phase4OpportunityArea.opportunity_id)
     result = await db.execute(query)
     opportunities = result.scalars().all()
