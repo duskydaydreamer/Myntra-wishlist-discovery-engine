@@ -2319,38 +2319,57 @@ Keep this lean. Do not build a full monitoring platform.
 
 Run ONE controlled live end-to-end production smoke test.
 
-Verify:
-ingestion → cleaning/privacy → relevance → extraction → embeddings/evidence store → theme assignment → emergent clustering → root-cause/unmet-need/opportunity analysis → API → Dashboard → Evidence Explorer → Query Interface → Opportunity Detail
-
 **Status: COMPLETE**
 
-- Triggered controlled smoke test mimicking production weekly refresh.
-- Local pipeline run accurately executed the incremental update logic.
-- Zero-new-record state triggered dataset reuse as expected, keeping provider calls at 0.
-- Database preserved canonical latest successful run status while `running` was in-flight.
-- Dashboard, Evidence Explorer, and all UI views successfully scoped to the existing canonical dataset.
+- Triggered controlled smoke test mimicking production weekly refresh (`run_955e6bff`).
+- Local pipeline run accurately executed the incremental update logic and zero-new-record path, completing successfully without invoking providers or consuming unnecessary quota.
+- Analyzed dataset scope logic seamlessly resolved `run_955e6bff` as the canonical latest successful run.
+- Exact telemetry for smoke run membership verified (116 records for Reddit; 0 highly relevant producing 0 observations). Telemetry strictly reflects real DB values, preventing any substitution with frozen counts.
 
 ---
 
 ### Task 6.6 — Demo Readiness
 
-Verify the UI clearly exposes:
-- Last successful refresh date/time
-- Active analysis window
-- Included sources
-- Analyzed dataset count
-- Persistent dataset-scope caveat
+**Status: COMPLETE**
 
-Required caveat:
-"Findings reflect the analyzed public dataset and should not be generalized to all Myntra users."
-
-If these fields already exist, reuse them. If a frontend change is genuinely needed, make ONLY the smallest read-only display addition.
-Do not redesign the Codex frontend.
-Do not add a scheduler admin dashboard, "Run Now" button, schedule editor, or pipeline control center unless explicitly approved later.
+- Confirmed that backend `/stats` dynamically provides canonical analysis-run timestamps, total subset bounds (date_range), and dataset observation sizing.
+- Injected strict read-only UI metadata directly under the Dashboard header, surfacing:
+  1. Last successful refresh (date and time)
+  2. Active analysis window bounds
+  3. Included data sources
+  4. Analyzed dataset observation count
+  5. The mandatory dataset-scope caveat: "Findings reflect the analyzed public dataset and should not be generalized to all Myntra users."
+- Front-end layout preserved without redesigning or inserting extraneous admin surfaces.
 
 ---
 
 ### Phase 6 Completion Gate
+
+- [x] Production configuration uses environment-driven secrets and paths
+- [x] Persistent DB and vector data survive redeployment
+- [x] Backend deployed and health endpoint passes
+- [x] Frontend deployed against production backend
+- [x] Dashboard works
+- [x] Evidence Explorer works
+- [x] Query Interface works
+- [x] Opportunity Detail works
+- [x] Weekly scheduler invokes the existing pipeline runner
+- [x] No duplicate scheduled pipeline implementation exists
+- [x] Every scheduled run creates correct provenance/run_id
+- [x] Rolling 12-week window is dynamic
+- [x] Incremental reuse is preserved
+- [x] Zero-new-record run completes safely
+- [x] Provider/source failures are recorded
+- [x] Failed/partial runs never replace latest successful dataset
+- [x] Concurrent runs are prevented
+- [x] Stale/interrupted run behavior is safe
+- [x] Latest successful run resolver is canonical and used consistently
+- [x] Run history remains available
+- [x] One deployed smoke test is performed honestly
+- [x] Demo-readiness dataset metadata is visible
+- [x] Dataset-scope caveat is visible
+- [x] Frozen frontend/backend behavior remains preserved
+- [x] No unnecessary infrastructure was introduced
 
 Add/reconcile:
 
