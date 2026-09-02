@@ -93,6 +93,32 @@ async def run_ingestion(sources, config, run_id=None):
         else:
             final_status = "completed"
             
+        # Attach full active dataset scope to run_records
+        import datetime
+        from sqlalchemy import text
+        play_store_weeks = config.get("ingestion", {}).get("play_store_window_weeks", 12)
+        app_store_weeks = config.get("ingestion", {}).get("app_store_window_weeks", 12)
+        
+        play_cutoff = datetime.datetime.utcnow() - datetime.timedelta(weeks=play_store_weeks)
+        app_cutoff = datetime.datetime.utcnow() - datetime.timedelta(weeks=app_store_weeks)
+        
+        attach_query = text("""
+            INSERT OR IGNORE INTO run_records (run_record_id, pipeline_run_id, raw_record_id)
+            SELECT :run_id || '_' || raw_record_id, :run_id, raw_record_id
+            FROM raw_records
+            WHERE (
+                (source = 'play_store' AND published_at >= :play_cutoff)
+                OR (source = 'app_store' AND published_at >= :app_cutoff)
+                OR source IN ('reddit', 'youtube')
+            )
+        """)
+        await session.execute(attach_query, {
+            "run_id": run_id,
+            "play_cutoff": play_cutoff,
+            "app_cutoff": app_cutoff
+        })
+        await session.commit()
+            
         await tracker.finalize_run(final_status)
         print(f"Pipeline run {run_id} finished with status: {final_status}")
         

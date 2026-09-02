@@ -2321,10 +2321,10 @@ Run ONE controlled live end-to-end production smoke test.
 
 **Status: COMPLETE**
 
-- Triggered controlled smoke test mimicking production weekly refresh (`run_955e6bff`).
-- Local pipeline run accurately executed the incremental update logic and zero-new-record path, completing successfully without invoking providers or consuming unnecessary quota.
-- Analyzed dataset scope logic seamlessly resolved `run_955e6bff` as the canonical latest successful run.
-- Exact telemetry for smoke run membership verified (116 records for Reddit; 0 highly relevant producing 0 observations). Telemetry strictly reflects real DB values, preventing any substitution with frozen counts.
+- Identified and fixed a core ingestion pipeline bug where `run_records` membership previously dropped all historical active-window records and only retained newly fetched records.
+- Configured missing `RAILWAY_BACKEND_URL` and `SCHEDULER_SECRET` GitHub/Railway secrets to allow automation execution.
+- Triggered ONE real live `workflow_dispatch` production smoke test.
+- Verified telemetry reflecting correct, full dynamic dataset membership across the 12-week rolling window for Play Store/App Store and curated static sources.
 
 ---
 
