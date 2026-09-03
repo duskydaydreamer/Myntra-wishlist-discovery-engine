@@ -16,16 +16,21 @@ const STARTER_QUESTIONS = [
 
 const pretty = (value: string) => plainResearchLanguage(value.replaceAll('_', ' ').replace(/\b\w/g, char => char.toUpperCase()));
 
-const questionTypeLabel = (value: string) => value === 'count_filter'
-  ? 'Count matching feedback'
-  : value === 'ranked_barriers'
-    ? 'Rank issues across the full dataset'
-    : 'Explain what the evidence shows';
+const questionTypeLabel = (value: string) => {
+  if (value === 'count_filter') return 'Count matching feedback';
+  if (value === 'ranked_barriers') return 'Rank barriers in the full dataset';
+  if (value === 'focused_evidence') return 'Examine one issue across the dataset';
+  if (value === 'ranked_information_needs') return 'Rank stated information needs';
+  if (value.startsWith('ranked_')) return 'Rank matching signals in the full dataset';
+  return 'Explain what the evidence shows';
+};
 
 function searchMethodLabel(value: string) {
   if (value === 'deterministic') return 'Exact data match';
   if (value === 'filtered_semantic') return 'Filters plus meaning-based search';
   if (value === 'semantic_only') return 'Meaning-based search';
+  if (value === 'filtered_keyword') return 'Filters plus keyword matching';
+  if (value === 'keyword_only') return 'Keyword matching';
   return pretty(value);
 }
 

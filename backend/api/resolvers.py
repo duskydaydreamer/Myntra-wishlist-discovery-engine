@@ -5,10 +5,12 @@ from backend.store.database import PipelineRun
 
 async def get_latest_successful_run(db: AsyncSession) -> PipelineRun:
     """
-    Returns the canonical latest successfully completed pipeline run.
-    - status MUST equal "completed"
-    - order deterministically by completion timestamp, then started_at, then run_id
+    Returns the canonical latest successfully completed pipeline run
+    that processed a comprehensive dataset (> 1000 records).
     """
+    from backend.store.database import RunRecord
+    from sqlalchemy import func
+
     query = (
         select(PipelineRun)
         .where(PipelineRun.status == "completed")
@@ -17,12 +19,14 @@ async def get_latest_successful_run(db: AsyncSession) -> PipelineRun:
             desc(PipelineRun.started_at),
             desc(PipelineRun.run_id)
         )
-        .limit(1)
     )
     result = await db.execute(query)
-    run = result.scalars().first()
     
-    if not run:
-        raise HTTPException(status_code=404, detail="No completed pipeline run found")
-        
-    return run
+    for run in result.scalars().all():
+        count_q = select(func.count(RunRecord.run_record_id)).where(RunRecord.pipeline_run_id == run.run_id)
+        count_res = await db.execute(count_q)
+        count = count_res.scalar() or 0
+        if count > 1000:
+            return run
+            
+    raise HTTPException(status_code=404, detail="No comprehensive completed pipeline run found")

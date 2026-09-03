@@ -71,6 +71,26 @@ async def test_ranked_queries():
         assert "answer" in data
         assert "outcome" in data["answer"].lower() or "abandoned" in data["answer"].lower()
 
+
+@pytest.mark.asyncio
+async def test_query_interface_prompts_are_deterministic_and_readable():
+    prompts = [
+        "What are the top barriers?",
+        "What sizing uncertainties do shoppers report?",
+        "What evidence supports pricing trust concerns?",
+        "What delivery or return friction do users describe?",
+        "What barriers prevent high-intent users from purchasing?",
+        "What information do shoppers look for before buying on Myntra?",
+    ]
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        for prompt in prompts:
+            response = await ac.post("/api/query", json={"query": prompt})
+            assert response.status_code == 200, prompt
+            data = response.json()
+            assert data["retrieval_mode"] == "deterministic", prompt
+            assert data["answer"].strip(), prompt
+            assert not data["answer"].lstrip().startswith(("{", "[")), prompt
+
 @pytest.mark.asyncio
 async def test_ollama_unavailable_behavior():
     # Simulate Ollama being down by patching specifically intent_parser's httpx client instantiation

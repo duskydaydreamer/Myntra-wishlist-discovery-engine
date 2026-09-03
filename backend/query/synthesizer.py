@@ -33,30 +33,45 @@ Return your response in standard Markdown.
 """
 
 def _fallback_answer(evidence_records: list) -> str:
-    """Return a transparent evidence-only summary when the local model service is unavailable."""
-    quoted_records = [record for record in evidence_records if record.get("evidence_quote")][:3]
+    """Return a structured evidence-only answer when the local model is unavailable."""
+    quoted_records = [
+        record for record in evidence_records
+        if record.get("evidence_quote")
+        and "[NAME]" not in record["evidence_quote"]
+        and "REGION_RESTRICTED" not in record["evidence_quote"]
+    ][:3]
     if not quoted_records:
         return "No readable customer quotes were available for this question."
 
-    barriers = []
+    barrier_counts = {}
     for record in evidence_records:
         barrier = record.get("primary_barrier")
-        if barrier and barrier not in barriers and barrier not in {"unknown", "none"}:
-            barriers.append(barrier)
+        if barrier and barrier not in {"unknown", "none"}:
+            barrier_counts[barrier] = barrier_counts.get(barrier, 0) + 1
 
-    if barriers:
-        readable_barriers = ", ".join(barrier.replace("_", " ").title() for barrier in barriers[:3])
-        introduction = f"The retrieved customer evidence most clearly points to: {readable_barriers}."
+    if barrier_counts:
+        ranked_barriers = sorted(barrier_counts.items(), key=lambda item: (-item[1], item[0]))[:3]
+        signal_lines = [
+            f'- **{barrier.replace("_", " ").title()}** — {count} of {len(evidence_records)} retrieved records'
+            for barrier, count in ranked_barriers
+        ]
+        signal_section = "### Strongest signals in the retrieved evidence\n" + "\n".join(signal_lines)
     else:
-        introduction = "The retrieved customer evidence contains the following relevant feedback."
+        signal_section = "The retrieved records do not contain a consistently classified primary barrier."
 
     evidence_lines = []
     for record in quoted_records:
         quote = record["evidence_quote"].strip()
         source = str(record.get("source") or "public feedback").replace("_", " ").title()
-        evidence_lines.append(f'- “{quote}” — {source}')
+        evidence_lines.append(f'> “{quote}” — {source}')
 
-    return introduction + "\n\nWhat customers wrote:\n" + "\n".join(evidence_lines)
+    return "\n\n".join([
+        "This answer uses the closest matching customer evidence available for the question.",
+        signal_section,
+        "### Representative customer comments",
+        "\n".join(evidence_lines),
+        "This is a retrieved sample, not a full-dataset ranking.",
+    ])
 
 async def synthesize_answer(question: str, evidence_records: list) -> str:
     if not evidence_records:
@@ -92,4 +107,3 @@ async def synthesize_answer(question: str, evidence_records: list) -> str:
     except Exception as e:
         print(f"Error in local model synthesis: {e}")
         return _fallback_answer(evidence_records)
-
