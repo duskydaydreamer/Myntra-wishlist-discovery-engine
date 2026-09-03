@@ -223,35 +223,28 @@ async def get_stats(db: AsyncSession = Depends(get_db_session)):
     run = await get_latest_successful_run(db)
         
     # Calculate every displayed count from the current database snapshot.
-    source_dist_query = select(Observation.source, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id).group_by(Observation.source)
+    source_dist_query = select(Observation.source, func.count(Observation.observation_id)).group_by(Observation.source)
     dist_result = await db.execute(source_dist_query)
     source_dist_analyzed = {row[0]: row[1] for row in dist_result.all() if row[0]}
 
-    cleaned_count_query = select(func.count(CleanedRecord.cleaned_record_id)).join(RunRecord, RunRecord.raw_record_id == CleanedRecord.raw_record_id).where(
-        RunRecord.pipeline_run_id == run.run_id,
-        CleanedRecord.is_duplicate == False,
-        CleanedRecord.is_spam == False,
-    )
+    cleaned_count_query = select(func.count(CleanedRecord.cleaned_record_id)).where(CleanedRecord.is_duplicate == False, CleanedRecord.is_spam == False)
     cleaned_count_result = await db.execute(cleaned_count_query)
     cleaned_count = cleaned_count_result.scalar() or 0
 
-    raw_count_result = await db.execute(select(func.count(RunRecord.run_record_id)).where(RunRecord.pipeline_run_id == run.run_id))
+    raw_count_result = await db.execute(select(func.count(RunRecord.run_record_id)).where(True))
     raw_count = raw_count_result.scalar() or 0
     raw_dist_result = await db.execute(
-        select(RawRecord.source, func.count(RawRecord.raw_record_id)).join(RunRecord, RunRecord.raw_record_id == RawRecord.raw_record_id).where(RunRecord.pipeline_run_id == run.run_id).group_by(RawRecord.source)
+        select(RawRecord.source, func.count(RawRecord.raw_record_id)).group_by(RawRecord.source)
     )
     raw_dist = {row[0]: row[1] for row in raw_dist_result.all() if row[0]}
 
     relevant_count_result = await db.execute(
-        select(func.count(ClassifiedRecord.classified_record_id)).join(CleanedRecord, CleanedRecord.cleaned_record_id == ClassifiedRecord.cleaned_record_id).join(RunRecord, RunRecord.raw_record_id == CleanedRecord.raw_record_id).where(
-            RunRecord.pipeline_run_id == run.run_id,
-            ClassifiedRecord.relevance_label.in_(("highly_relevant", "somewhat_relevant"))
-        )
+        select(func.count(ClassifiedRecord.classified_record_id)).join(CleanedRecord, CleanedRecord.cleaned_record_id == ClassifiedRecord.cleaned_record_id).where(ClassifiedRecord.relevance_label.in_(("highly_relevant", "somewhat_relevant")))
     )
     relevant_count = relevant_count_result.scalar() or 0
-    processed_count_result = await db.execute(select(func.count(func.distinct(Observation.source_record_id))).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id))
+    processed_count_result = await db.execute(select(func.count(func.distinct(Observation.source_record_id))))
     processed_count = processed_count_result.scalar() or 0
-    observation_count_result = await db.execute(select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id))
+    observation_count_result = await db.execute(select(func.count(Observation.observation_id)))
     observation_count = observation_count_result.scalar() or 0
 
     date_result = await db.execute(select(func.min(RawRecord.published_at), func.max(RawRecord.published_at)))
@@ -306,7 +299,7 @@ async def get_themes(db: AsyncSession = Depends(get_db_session)):
     rows = result.all()
     
     # Total observations for mapping rate
-    total_obs_q = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    total_obs_q = select(func.count(Observation.observation_id))
     total_obs_res = await db.execute(total_obs_q)
     total_obs = total_obs_res.scalar() or 1
     
@@ -348,7 +341,7 @@ async def get_opportunities(db: AsyncSession = Depends(get_db_session)):
         cluster_ids = rule["cluster_ids"]
 
         count_q = (
-            select(func.count(func.distinct(Observation.source_record_id))).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+            select(func.count(func.distinct(Observation.source_record_id)))
             .join(ClusterMembership, ClusterMembership.observation_id == Observation.observation_id)
             .where(ClusterMembership.cluster_id.in_(cluster_ids))
         )
@@ -401,7 +394,7 @@ async def get_opportunities(db: AsyncSession = Depends(get_db_session)):
             for row in selected_quotes if row[0]
         ]
 
-        denominator_result = await db.execute(select(func.count(func.distinct(Observation.source_record_id))).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id))
+        denominator_result = await db.execute(select(func.count(func.distinct(Observation.source_record_id))))
         denominator = denominator_result.scalar() or 0
             
         stats.append({
@@ -439,7 +432,7 @@ async def get_barriers(
         primary_barrier=None, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.primary_barrier, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.primary_barrier, func.count(Observation.observation_id))
     
     if db_filters:
         query = query.where(*db_filters)
@@ -455,7 +448,7 @@ async def get_barriers(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id))
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -488,7 +481,7 @@ async def get_wishlist_motivations(
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.wishlist_intent, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.wishlist_intent, func.count(Observation.observation_id))
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.wishlist_intent).order_by(desc(func.count(Observation.observation_id)))
     
@@ -500,7 +493,7 @@ async def get_wishlist_motivations(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id))
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -533,7 +526,7 @@ async def get_purchase_intents(
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.purchase_intent, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.purchase_intent, func.count(Observation.observation_id))
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.purchase_intent).order_by(desc(func.count(Observation.observation_id)))
     
@@ -545,7 +538,7 @@ async def get_purchase_intents(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id))
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -578,7 +571,7 @@ async def get_journey_stages(
         primary_barrier=primary_barrier, journey_stage=None, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.journey_stage, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.journey_stage, func.count(Observation.observation_id))
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.journey_stage).order_by(desc(func.count(Observation.observation_id)))
     
@@ -590,7 +583,7 @@ async def get_journey_stages(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id))
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -623,7 +616,7 @@ async def get_decision_outcomes(
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=None
     )
     
-    query = select(Observation.decision_outcome, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.decision_outcome, func.count(Observation.observation_id))
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.decision_outcome).order_by(desc(func.count(Observation.observation_id)))
     
@@ -635,7 +628,7 @@ async def get_decision_outcomes(
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        denom_query = select(func.count(Observation.observation_id))
         if db_filters: denom_query = denom_query.where(*db_filters)
         denom_result = await db.execute(denom_query)
         denominator = denom_result.scalar() or 0
@@ -677,7 +670,7 @@ async def get_uncertainties(
         ]),
         func.lower(Observation.uncertainty).not_like("%region_restricted%"),
     ]
-    query = select(Observation.uncertainty, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.uncertainty, func.count(Observation.observation_id))
     query = query.where(*valid_uncertainty)
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.uncertainty)
@@ -685,7 +678,7 @@ async def get_uncertainties(
     result = await db.execute(query)
     items, classified_count = _aggregate_free_text(result.all(), _normalize_uncertainty)
     
-    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    total_query = select(func.count(Observation.observation_id))
     if db_filters:
         total_query = total_query.where(*db_filters)
     total_count = (await db.execute(total_query)).scalar() or 0
@@ -719,7 +712,7 @@ async def get_information_needs(
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.information_needed, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.information_needed, func.count(Observation.observation_id))
     query = query.where(
         Observation.information_needed.is_not(None),
         func.lower(func.trim(Observation.information_needed)).notin_(["", "unknown", "none", "null"]),
@@ -730,7 +723,7 @@ async def get_information_needs(
     result = await db.execute(query)
     items = _aggregate_information_needs(result.all())
     
-    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    denom_query = select(func.count(Observation.observation_id))
     if db_filters: denom_query = denom_query.where(*db_filters)
     denom_result = await db.execute(denom_query)
     denominator = denom_result.scalar() or 0
@@ -770,7 +763,7 @@ async def get_workarounds(
         ]),
         func.lower(Observation.workaround).not_like("%region_restricted%"),
     ]
-    query = select(Observation.workaround, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.workaround, func.count(Observation.observation_id))
     query = query.where(*valid_workaround)
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.workaround)
@@ -778,7 +771,7 @@ async def get_workarounds(
     result = await db.execute(query)
     items, classified_count = _aggregate_free_text(result.all(), _normalize_workaround)
     
-    total_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    total_query = select(func.count(Observation.observation_id))
     if db_filters:
         total_query = total_query.where(*db_filters)
     total_count = (await db.execute(total_query)).scalar() or 0
@@ -812,7 +805,7 @@ async def get_segments(
         primary_barrier=primary_barrier, journey_stage=journey_stage, decision_outcome=decision_outcome
     )
     
-    query = select(Observation.segment_signal, func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    query = select(Observation.segment_signal, func.count(Observation.observation_id))
     query = query.where(Observation.segment_signal != "unknown", Observation.segment_signal.is_not(None))
     if db_filters: query = query.where(*db_filters)
     query = query.group_by(Observation.segment_signal).order_by(desc(func.count(Observation.observation_id))).limit(10)
@@ -820,7 +813,7 @@ async def get_segments(
     result = await db.execute(query)
     items = [{"name": row[0], "count": row[1]} for row in result.all()]
     
-    denom_query = select(func.count(Observation.observation_id)).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    denom_query = select(func.count(Observation.observation_id))
     if db_filters: denom_query = denom_query.where(*db_filters)
     denom_result = await db.execute(denom_query)
     denominator = denom_result.scalar() or 0

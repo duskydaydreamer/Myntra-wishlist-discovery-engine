@@ -228,7 +228,7 @@ async def _ranked_dimension_response(question: str, dimension: str, db: AsyncSes
     column = config["column"]
     count_result = await db.execute(
         select(column, func.count(Observation.observation_id))
-        .select_from(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        .select_from(Observation)
         .group_by(column)
         .order_by(desc(func.count(Observation.observation_id)))
     )
@@ -278,7 +278,7 @@ async def _ranked_theme_response(question: str, db: AsyncSession):
             PredefinedTheme.canonical_name,
             func.count(func.distinct(ThemeAssignment.observation_id)),
         )
-        .outerjoin(ThemeAssignment, ThemeAssignment.predefined_theme_id == PredefinedTheme.theme_id).outerjoin(Observation, Observation.observation_id == ThemeAssignment.observation_id).outerjoin(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+        .outerjoin(ThemeAssignment, ThemeAssignment.predefined_theme_id == PredefinedTheme.theme_id).outerjoin(Observation, Observation.observation_id == ThemeAssignment.observation_id).outerjoin(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(True)
         .group_by(PredefinedTheme.theme_id, PredefinedTheme.canonical_name)
         .order_by(desc(func.count(func.distinct(ThemeAssignment.observation_id))))
     )
@@ -665,7 +665,7 @@ async def execute_query(req: QueryRequest, db: AsyncSession = Depends(get_db_ses
     
     # 3. Retrieve eligible IDs
     run = await get_latest_successful_run(db)
-    stmt = select(Observation).join(RunRecord, RunRecord.raw_record_id == Observation.source_record_id).where(RunRecord.pipeline_run_id == run.run_id)
+    stmt = select(Observation)
     if db_filters:
         stmt = stmt.where(*db_filters)
         
