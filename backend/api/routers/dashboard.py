@@ -443,15 +443,15 @@ async def get_barriers(
     items = [{"name": row[0] or "unknown", "count": row[1]} for row in result.all()]
     
     # Calculate denominator
+    denom_query = select(func.count(Observation.observation_id))
+    if db_filters: denom_query = denom_query.where(*db_filters)
+    denom_result = await db.execute(denom_query)
+    denominator = denom_result.scalar() or 0
+
     if not active_filters:
-        denominator = run.observation_count or 0
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id))
-        if db_filters: denom_query = denom_query.where(*db_filters)
-        denom_result = await db.execute(denom_query)
-        denominator = denom_result.scalar() or 0
         denominator_definition = "Observations matching active filters"
         denominator_scope = "filtered"
     
@@ -488,15 +488,15 @@ async def get_wishlist_motivations(
     result = await db.execute(query)
     items = [{"name": row[0] or "unknown", "count": row[1]} for row in result.all()]
     
+    denom_query = select(func.count(Observation.observation_id))
+    if db_filters: denom_query = denom_query.where(*db_filters)
+    denom_result = await db.execute(denom_query)
+    denominator = denom_result.scalar() or 0
+
     if not active_filters:
-        denominator = run.observation_count or 0
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id))
-        if db_filters: denom_query = denom_query.where(*db_filters)
-        denom_result = await db.execute(denom_query)
-        denominator = denom_result.scalar() or 0
         denominator_definition = "Observations matching active filters"
         denominator_scope = "filtered"
     
@@ -533,15 +533,15 @@ async def get_purchase_intents(
     result = await db.execute(query)
     items = [{"name": row[0] or "unknown", "count": row[1]} for row in result.all()]
     
+    denom_query = select(func.count(Observation.observation_id))
+    if db_filters: denom_query = denom_query.where(*db_filters)
+    denom_result = await db.execute(denom_query)
+    denominator = denom_result.scalar() or 0
+
     if not active_filters:
-        denominator = run.observation_count or 0
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id))
-        if db_filters: denom_query = denom_query.where(*db_filters)
-        denom_result = await db.execute(denom_query)
-        denominator = denom_result.scalar() or 0
         denominator_definition = "Observations matching active filters"
         denominator_scope = "filtered"
     
@@ -578,15 +578,15 @@ async def get_journey_stages(
     result = await db.execute(query)
     items = [{"name": row[0] or "unknown", "count": row[1]} for row in result.all()]
     
+    denom_query = select(func.count(Observation.observation_id))
+    if db_filters: denom_query = denom_query.where(*db_filters)
+    denom_result = await db.execute(denom_query)
+    denominator = denom_result.scalar() or 0
+
     if not active_filters:
-        denominator = run.observation_count or 0
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id))
-        if db_filters: denom_query = denom_query.where(*db_filters)
-        denom_result = await db.execute(denom_query)
-        denominator = denom_result.scalar() or 0
         denominator_definition = "Observations matching active filters"
         denominator_scope = "filtered"
     
@@ -623,15 +623,15 @@ async def get_decision_outcomes(
     result = await db.execute(query)
     items = [{"name": row[0] or "unknown", "count": row[1]} for row in result.all()]
     
+    denom_query = select(func.count(Observation.observation_id))
+    if db_filters: denom_query = denom_query.where(*db_filters)
+    denom_result = await db.execute(denom_query)
+    denominator = denom_result.scalar() or 0
+
     if not active_filters:
-        denominator = run.observation_count or 0
         denominator_definition = "Total canonical observations"
         denominator_scope = "global"
     else:
-        denom_query = select(func.count(Observation.observation_id))
-        if db_filters: denom_query = denom_query.where(*db_filters)
-        denom_result = await db.execute(denom_query)
-        denominator = denom_result.scalar() or 0
         denominator_definition = "Observations matching active filters"
         denominator_scope = "filtered"
     
